@@ -33,10 +33,22 @@
         @RenderBody()
         <hr />
         <footer>
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title text-center">
+                        <i class="material-icons">computer</i>
+                    </h5>
+                    <div class="card-footer text-muted">
+                        <strong> Created on</strong>
+                    </div>
+                </div>
+            </div>
+
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>
     </div>
 
+    @Scripts.Render("~/bundles/popper")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
