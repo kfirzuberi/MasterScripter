@@ -18,10 +18,10 @@ namespace MasterScripter.DAL.Models
         public int CompanyCode { get; set; }
         [Column(TypeName = "datetime2")]
         public DateTime? CreationDate { get; set; }
-        public double Lon { get; set; }
-        public double Lat { get; set; }
+        public int CountryId { get; set; }
         public virtual ICollection<Execution> Executions { get; set; }
         public virtual Company Company { get; set; }
+        public virtual Country Country { get; set; }
         
     }
 }

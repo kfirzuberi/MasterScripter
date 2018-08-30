@@ -261,6 +261,13 @@ namespace MasterScripter.DAL.Utils
             };
         }
 
+        public static List<Country> GetCountries()
+        {
+            int index = 1000;
+
+            return GetPoints().ConvertAll(point => new Country(){Id = index++, Name = point.Item3, Lon = point.Item2, Lat = point.Item1});
+        }
+
         public static List<Company> GetCompanies()
         {
             return new List<Company>()
@@ -312,25 +319,19 @@ namespace MasterScripter.DAL.Utils
             };
 
             var companies = GetCompanies();
-            var countriesPoints = GetPoints();
+            var countries = GetCountries();
 
             return ips.ConvertAll(ip =>
-            {
-                var countryPoint = countriesPoints[r.Next(1, countriesPoints.Count)];
-
-                Machine machine = new Machine()
+                new Machine()
                 {
                     IP = ip,
                     CreationDate = DateTime.Now - TimeSpan.FromHours(r.Next(5, 999)),
                     CompanyCode = companies[r.Next(1, companies.Count)].Code,
                     IsDeleted = false,
                     VLan = r.Next(1, 4000),
-                    Lat = countryPoint.Item1,
-                    Lon = countryPoint.Item2
-                };
-
-                return machine;
-            });
+                    CountryId = countries[r.Next(1, countries.Count)].Id
+                }
+            );
         }
 
         public static List<Script> GetScripts(List<int> users, List<FileType> fileTypes)

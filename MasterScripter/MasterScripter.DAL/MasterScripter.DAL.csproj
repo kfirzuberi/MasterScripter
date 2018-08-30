@@ -52,6 +52,7 @@
     <Compile Include="Consts.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Company.cs" />
+    <Compile Include="Models\Country.cs" />
     <Compile Include="Models\Execution.cs" />
     <Compile Include="Models\ExecutionsScripts.cs" />
     <Compile Include="Models\FileType.cs" />
