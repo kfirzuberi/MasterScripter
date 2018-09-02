@@ -1,0 +1,80 @@
+﻿@model MasterScripter.Models.ManagementViewModel
+@{
+    ViewBag.Title = "index";
+}
+
+<h2>index</h2>
+
+<!-- Nav tabs -->
+<ul class="nav nav-tabs md-tabs nav-justified">
+    <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#panelUsers" role="tab"><i class="material-icons">supervisor_account</i>Users</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#panelCompanies" role="tab"><i class="material-icons">business</i>Companies</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#panelReasons" role="tab"><i class="material-icons">flag</i>Reasons</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#panelFileTypes" role="tab"><i class="material-icons">toc</i>File Types</a>
+    </li>
+</ul>
+<!-- Tab panels -->
+<div class="tab-content card">
+    <!--Panel 1 Users-->
+    <div class="tab-pane fade in show active" id="panelUsers" role="tabpanel">
+        <br>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil odit magnam minima, soluta doloribus
+            reiciendis molestiae placeat unde eos molestias. Quisquam aperiam, pariatur. Tempora, placeat ratione
+            porro voluptate odit minima.
+        </p>
+    </div>
+    <!--/.Panel 1-->
+    <!--Panel 2 Companies-->
+    <div class="tab-pane fade" id="panelCompanies" role="tabpanel">
+        <br>
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">@Html.DisplayNameFor(model => model.Companies.First().Code)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.Companies.First().Name)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.Companies.First().Logo)</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.Companies)
+            {
+                <tr>
+                    <th scope="row">@Html.DisplayFor(modelItem => item.Code)</th>
+                    <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Logo)</td>
+                </tr>
+            }
+     
+            </tbody>
+        </table>
+    </div>
+    <!--/.Panel 2-->
+    <!--Panel 3 Reasons-->
+    <div class="tab-pane fade" id="panelReasons" role="tabpanel">
+        <br>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil odit magnam minima, soluta doloribus
+            reiciendis molestiae placeat unde eos molestias. Quisquam aperiam, pariatur. Tempora, placeat ratione
+            porro voluptate odit minima.
+        </p>
+    </div>
+    <!--/.Panel 3-->
+    <!--Panel 3 File Types-->
+    <div class="tab-pane fade" id="panelFileTypes" role="tabpanel">
+        <br>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil odit magnam minima, soluta doloribus
+            reiciendis molestiae placeat unde eos molestias. Quisquam aperiam, pariatur. Tempora, placeat ratione
+            porro voluptate odit minima.
+        </p>
+    </div>
+    <!--/.Panel 3-->
+</div>
