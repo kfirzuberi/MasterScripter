@@ -23,13 +23,13 @@ namespace MasterScripter.Controllers
         }
 
         // GET: Scripts/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int? id, int? version)
         {
-            if (id == null)
+            if (id == null || version==null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Script script = db.Scripts.Find(id);
+            Script script = db.Scripts.Find(id,version);
             if (script == null)
             {
                 return HttpNotFound();
@@ -64,14 +64,31 @@ namespace MasterScripter.Controllers
             return View(script);
         }
 
-        // GET: Scripts/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult GetScriptDetail(int? id, int? version)
         {
-            if (id == null)
+            if (id == null || version == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Script script = db.Scripts.Find(id);
+            Script script = db.Scripts.Find(id, version);
+            if (script == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.FileTypeId = new SelectList(db.FileTypes, "Id", "Language", script.FileTypeId);
+            ViewBag.UserId = new SelectList(db.Users, "Id", "FullName", script.UserId);
+
+            return PartialView("Details", script);
+        }
+
+        // GET: Scripts/Edit/5
+        public ActionResult Edit(int? id, int? version)
+        {
+            if (id == null || version==null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Script script = db.Scripts.Find(id,version);
             if (script == null)
             {
                 return HttpNotFound();

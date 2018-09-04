@@ -4,71 +4,58 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
 
-<div>
-    <h4>Script</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.FileType.Language)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.FileType.Language)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.User.FullName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.User.FullName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Content)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Content)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
+<div class="card" >
+    <div class="card-body">
+        <h5 class="card-title">
+            <strong>  @Html.DisplayNameFor(model => model.Name):</strong>  
             @Html.DisplayFor(model => model.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-
-        <dd>
+        </h5>
+        <p class="card-text">
+            <strong>@Html.DisplayNameFor(model => model.Description):</strong>
             @Html.DisplayFor(model => model.Description)
-        </dd>
+        </p>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <strong>@Html.DisplayNameFor(model => model.Version):</strong>
+            @Html.DisplayFor(model => model.Version)
+        </li>
+     
+        <li class="list-group-item">
+            <strong>@Html.DisplayNameFor(model => model.FileType.Language):</strong>
+            @Html.DisplayFor(model => model.FileType.Language)
+        </li>
+        
+        <li class="list-group-item">
+            <strong>
+            
+                @Html.DisplayNameFor(model => model.User.FullName):
+            </strong>
+            @Html.DisplayFor(model => model.User.FullName)
+            <i style="margin-left: unset;" class="material-icons">person</i>
+        </li>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.CreationDate)
-        </dt>
-
-        <dd>
+        <li class="list-group-item">
+            <strong>@Html.DisplayNameFor(model => model.CreationDate):</strong>
             @Html.DisplayFor(model => model.CreationDate)
-        </dd>
+        </li>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Cost)
-        </dt>
-
-        <dd>
+        <li class="list-group-item">
+            <strong>@Html.DisplayNameFor(model => model.Cost):</strong>
             @Html.DisplayFor(model => model.Cost)
-        </dd>
-
-    </dl>
+            <i style="margin-left: unset;" class="material-icons">attach_money</i>
+        </li>
+    </ul>
+    <div class="card-body">
+        <a href="#" class="card-link">Card link</a>
+        <a href="#" class="card-link">
+            @Html.ActionLink("Edit Script", "Edit", Model) |
+        </a>
+    </div>
+    <div class="card-footer text-muted">
+        @Html.DisplayFor(model => model.Content)
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+
