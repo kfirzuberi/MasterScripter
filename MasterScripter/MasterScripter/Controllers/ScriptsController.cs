@@ -18,7 +18,12 @@ namespace MasterScripter.Controllers
         // GET: Scripts
         public ActionResult Index()
         {
-            var scripts = db.Scripts.Include(s => s.FileType).Include(s => s.User);
+          var grouppedScripts = db.Scripts.Include(s => s.FileType).Include(s => s.User)
+                .OrderBy(script => script.Version)
+                .GroupBy(script => script.Id).ToList();
+
+          var  scripts = grouppedScripts.Select(s => s.Last()).ToList();
+         
             return View(scripts.ToList());
         }
 
@@ -52,6 +57,13 @@ namespace MasterScripter.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Version,Content,Name,Description,UserId,CreationDate,Cost,FileTypeId")] Script script)
         {
+            var scripts = db.Scripts.Include(s => s.FileType).Include(s => s.User);
+
+            script.Id = scripts.Max(s => s.Id) + 1;
+            script.Version = 1;
+            script.CreationDate = DateTime.Now;
+
+
             if (ModelState.IsValid)
             {
                 db.Scripts.Add(script);
@@ -107,7 +119,8 @@ namespace MasterScripter.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(script).State = EntityState.Modified;
+                script.Version++;
+                db.Scripts.Add(script);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

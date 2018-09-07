@@ -6,52 +6,82 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    
+    
+@Scripts.Render("~/bundles/popper")
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@RenderSection("scripts", required: false)
 
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    <li>@Html.ActionLink("Scripts", "Index", "Scripts")</li>
+<nav style="position: fixed; width: 100%; z-index: 999999999;">
+    <div class="container-fluid bg-primary">
+        <img src="~/images/logo-1.png" class="img-fluid" alt="Responsive image" style="margin: 0.5rem 0 1rem 0; width: 13rem;">
+
+        <div class="" style="position: relative;">
+            <div class="" style="position: absolute; left: 280px; bottom: 0;">
+                <ul class="nav nav-tabs bg-primary">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="@Url.Action("Index", "Home")">Home</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Scripts</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="@Url.Action("Index", "Scripts")">View</a>
+                            <a class="dropdown-item" href="@Url.Action("Create", "Scripts")">Add new</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Separated link</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Executions</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="@Url.Action("Index", "Executions")">View</a>
+                            <a class="dropdown-item" href="@Url.Action("Create", "Executions")">Add new</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Separated link</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("About", "Home")">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("Contact", "Home")">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#">Disabled</a>
+                    </li>
+                    <li class="nav-item">
+                        @Html.Partial("_LoginPartial")
+
+                    </li>
                 </ul>
-                @Html.Partial("_LoginPartial")
             </div>
         </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <div class="card mb-4">
-                <div class="card-body">
-                    <h5 class="card-title text-center">
-                        <i class="material-icons">computer</i>
-                    </h5>
-                    <div class="card-footer text-muted">
-                        <strong> Created on</strong>
-                    </div>
+
+    </div> 
+</nav>
+
+
+<div class="container body-content" style="padding-top: 11rem;">
+    @RenderBody()
+    <hr/>
+    <footer>
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title text-center">
+                    <i class="material-icons">computer</i>
+                </h5>
+                <div class="card-footer text-muted">
+                    <strong> Created on</strong>
                 </div>
             </div>
+        </div>
 
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
+        <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+    </footer>
+</div>
 
-    @Scripts.Render("~/bundles/popper")
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
 </body>
 </html>

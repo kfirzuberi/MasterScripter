@@ -195,7 +195,10 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="BL\Utils\Actions.cs" />
+    <Compile Include="BL\Utils\PermissionManager.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ExecutionsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ScriptsController.cs" />
@@ -224,6 +227,7 @@
     <Content Include="fonts\Roboto\LICENSE.txt" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="images\logo-1.png" />
     <Content Include="Scripts\bootstrap-material-design.js" />
     <Content Include="Scripts\bootstrap-material-design.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -301,6 +305,12 @@
     <Content Include="Views\Scripts\Details.cshtml" />
     <Content Include="Views\Scripts\Edit.cshtml" />
     <Content Include="Views\Scripts\Index.cshtml" />
+    <Content Include="Views\Executions\Create.cshtml" />
+    <Content Include="Views\Executions\Delete.cshtml" />
+    <Content Include="Views\Executions\Details.cshtml" />
+    <Content Include="Views\Executions\Edit.cshtml" />
+    <Content Include="Views\Executions\Index.cshtml" />
+    <Content Include="Views\Executions\Timeline.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -47,10 +47,9 @@
             <i style="margin-left: unset;" class="material-icons">attach_money</i>
         </li>
     </ul>
-    <div class="card-body">
-        <a href="#" class="card-link">Card link</a>
-        <a href="#" class="card-link">
-            @Html.ActionLink("Edit Script", "Edit", Model) |
+    <div class="card-body" style="position: relative">
+        <a href="'@Url.Action("Edit", "Scripts")'" class="btn btn-primary bmd-btn-fab bootom-right-fab" style="position: absolute">
+            <i class="material-icons">edit</i>
         </a>
     </div>
     <div class="card-footer text-muted">

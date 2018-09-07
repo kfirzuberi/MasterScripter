@@ -1,15 +1,14 @@
 ﻿@model IEnumerable<MasterScripter.DAL.Models.Script>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Scripts";
 }
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-
+<button type="button" onclick="location.href='@Url.Action("Create", "Scripts")'" class="btn btn-primary bmd-btn-fab bootom-right-fab" >
+    <i class="material-icons">add</i>
+</button>
 
 <div class="row">
     <div class="col-md-4">
@@ -32,84 +31,12 @@
     </div>
     
     <script type="text/javascript">
+        var url = '@Url.Action("GetScriptDetail", "Scripts")';
 
-        setTimeout(function() {
+        $('.list-group-item').click(function (event) {
 
-                var url = '@Url.Action("GetScriptDetail", "Scripts")';
-
-                $('.list-group-item').click(function (event) {
-             
-                    var params = event.target.id.split('_'); // convert from id_version to [id, version]
-                      $('#scriptDetail').load(url, { id: params[0], version: params[1] });
-                });
-            },
-            1500);
-    
-      
+            var params = event.target.id.split('_'); // convert from id_version to [id, version]
+            $('#scriptDetail').load(url, { id: params[0], version: params[1] });
+        });
     </script>
 </div>
-
-
-
-
-
-
-
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.FileType.Language)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.User.FullName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Content)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreationDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Cost)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.FileType.Language)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.User.FullName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Content)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreationDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Cost)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new {  id=item.Id, version = item.Version  }) |
-            @Html.ActionLink("Details", "Details", new { id = item.Id, version = item.Version }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-        </td>
-    </tr>
-}
-
-</table>
