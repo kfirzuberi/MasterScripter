@@ -152,7 +152,7 @@ textarea {
     border: 1px solid #c0c0c0;
     background: #ffffff;
     border-radius: 2px;
-    padding: 20px;
+    padding: 10px;
     -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
     box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
 }
@@ -252,4 +252,39 @@ textarea {
     position: fixed;
     bottom: 1rem;
     right: 1rem;
+}
+
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+ 
+::-webkit-scrollbar-thumb {
+    background: #009688 ;
+    border-radius: 0px;
+}
+
+::-webkit-scrollbar-track {
+    background: #ddd;
+    border-radius: 20px;
+}
+
+.timeline-panel.card.border-primary::before {
+    border-left-color: #009688;
+    border-right-color: #009688;
+}
+
+.timeline-panel.card.border-danger::before {
+    border-left-color: #f44336;
+    border-right-color: #f44336;
+}
+
+.timeline-panel.card.border-success::before {
+    border-left-color: #4caf50;
+    border-right-color: #4caf50;
+}
+
+.timeline-panel.card.border-secondary::before {
+    border-left-color: #6c757d;
+    border-right-color: #6c757d;
 }

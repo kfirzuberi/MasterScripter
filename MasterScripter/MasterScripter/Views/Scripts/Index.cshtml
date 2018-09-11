@@ -6,7 +6,8 @@
 
 <h2>Index</h2>
 
-<button type="button" onclick="location.href='@Url.Action("Create", "Scripts")'" class="btn btn-primary bmd-btn-fab bootom-right-fab" >
+<button type="button" onclick="location.href='@Url.Action("Create", "Scripts")'" class="btn btn-primary bmd-btn-fab bootom-right-fab" 
+        data-toggle="tooltip" data-placement="top" title="Add new Script">
     <i class="material-icons">add</i>
 </button>
 
@@ -34,9 +35,12 @@
         var url = '@Url.Action("GetScriptDetail", "Scripts")';
 
         $('.list-group-item').click(function (event) {
-
+            $('.list-group-item').removeClass('active');
+            $(this).addClass('active');
             var params = event.target.id.split('_'); // convert from id_version to [id, version]
             $('#scriptDetail').load(url, { id: params[0], version: params[1] });
         });
+
+        $('.list-group-item').first().click();
     </script>
 </div>

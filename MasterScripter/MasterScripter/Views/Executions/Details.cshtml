@@ -1,82 +1,141 @@
-﻿@model MasterScripter.DAL.Models.Execution
+﻿@using MasterScripter.DAL.Models
+@model MasterScripter.DAL.Models.Execution
 
 @{
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+@functions{
 
-<div>
-    <h4>Execution</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Machine.IP)
-        </dt>
+    public string GetIconText(Status status)
+    {
+        switch (status)
+        {
+            case Status.Running:
+                return "directions_run";
+            case Status.Succeeded:
+                return "done";
+            case Status.Failed:
+                return "error_outline";
+            case Status.Waiting:
+            default:
+                return "access_time";
+        }
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.Machine.IP)
-        </dd>
+}
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Reason.ReasonName)
-        </dt>
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-4">
+                <strong>
+                    @Html.DisplayNameFor(model => model.Machine.IP)
+                </strong>
+                @Html.DisplayFor(model => model.Machine.IP)
+            </div>
+            <div class="col-4">
+                <strong>
+                    @Html.DisplayNameFor(model => model.Machine.VLan)
+                </strong>
+                @Html.DisplayFor(model => model.Machine.VLan)
+            </div>
+            <div class="col-4">
+                <strong>
+                    @Html.DisplayNameFor(model => model.Reason.ReasonName)
+                </strong>
+                @Html.DisplayFor(model => model.Reason.ReasonName)
+            </div>
+            <div class="col-4">
+                <strong>
+                    @Html.DisplayNameFor(model => model.User.FullName)
+                </strong>
+                @Html.DisplayFor(model => model.User.FullName)
+            </div>
+            <div class="col-4">
+                <strong>
+                    @Html.DisplayNameFor(model => model.CreationDate)
+                </strong>
+                <span data-date="@Html.DisplayFor(model => model.CreationDate)" data-toggle="tooltip" data-placement="top" title="@Html.DisplayFor(model => model.CreationDate)">
+                    @Html.DisplayFor(model => model.CreationDate)
+                </span>
+            </div>
+            <div class="col-4">
+                <strong>
+                    @Html.DisplayNameFor(model => model.Status)
+                </strong>
+                <i class="material-icons md-18" style="line-height: 1px;">@GetIconText(Model.Status)</i>
+                @Html.DisplayFor(model => model.Status)
+            </div>
+            <div class="col-4">
+                <strong>
+                    @Html.DisplayNameFor(model => model.SrartTime)
+                </strong>
+                <span data-date="@Html.DisplayFor(model => model.SrartTime)" data-toggle="tooltip" data-placement="top" title="@Html.DisplayFor(model => model.SrartTime)">
+                    @Html.DisplayFor(model => model.SrartTime)
+                </span>
+            </div>
+            <div class="col-4">
+                <strong>
+                    @Html.DisplayNameFor(model => model.EndTime)
+                </strong>
+                <span data-date="@Html.DisplayFor(model => model.EndTime)" data-toggle="tooltip" data-placement="top" title="@Html.DisplayFor(model => model.EndTime)">
+                @Html.DisplayFor(model => model.EndTime)
+                    </span>
+            </div>
+            <div class="col-4">
+                <strong>
+                    @Html.DisplayNameFor(model => model.ScheduleTime)
+                </strong>
+                <span data-date="@Html.DisplayFor(model => model.ScheduleTime)" data-toggle="tooltip" data-placement="top" title="@Html.DisplayFor(model => model.ScheduleTime)">
+                @Html.DisplayFor(model => model.ScheduleTime)
+                </span>
+            </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Reason.ReasonName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.User.FullName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.User.FullName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CreationDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreationDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.SrartTime)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SrartTime)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EndTime)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EndTime)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ScheduleTime)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ScheduleTime)
-        </dd>
-
-    </dl>
+        </div>
+    </div>
+    
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+<div class="card" style="margin-top: 10px;">
+    <div class="card-body">
+        <table class="table">
+            <thead>
+            <tr>
+                <th style="padding: 0.1rem;"></th>
+                <th style="padding: 0.1rem;" scope="col">@Html.LabelFor(modelItem => modelItem.ExecutionsScriptses.First().Order)</th>
+                <th style="padding: 0.1rem;" scope="col">@Html.LabelFor(modelItem => modelItem.ExecutionsScriptses.First().Script.Name)</th>
+                <th style="padding: 0.1rem;" scope="col">@Html.LabelFor(modelItem => modelItem.ExecutionsScriptses.First().SrartTime)</th>
+                <th style="padding: 0.1rem;" scope="col">@Html.LabelFor(modelItem => modelItem.ExecutionsScriptses.First().EndTime)</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.ExecutionsScriptses)
+            {
+                <tr>
+                    <td><i class="material-icons md-18" style="line-height: 1px;">@GetIconText(item.Status)</i></td>
+                    <th scope="row">@Html.DisplayFor(modelItem => item.Order)</th>
+                    <td>@Html.DisplayFor(modelItem => item.Script.Name) (@Html.DisplayFor(modelItem => item.ScriptVersion))</td>
+                    <td data-date="@Html.DisplayFor(modelItem => item.SrartTime)" data-toggle="tooltip" data-placement="top" title="@Html.DisplayFor(modelItem => item.SrartTime)">@Html.DisplayFor(modelItem => item.SrartTime)</td>
+                    <td data-date="@Html.DisplayFor(modelItem => item.EndTime)" data-toggle="tooltip" data-placement="top" title="@Html.DisplayFor(modelItem => item.EndTime)">@Html.DisplayFor(modelItem => item.EndTime)</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $('[data-date]').each(function () {
+            var val = $(this).attr('data-date');
+
+            if (val) {
+                $(this).html(moment(val).fromNow());
+            }
+        
+        });
+    });
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
