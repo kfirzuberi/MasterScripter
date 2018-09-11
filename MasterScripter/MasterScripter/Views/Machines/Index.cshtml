@@ -1,0 +1,87 @@
+﻿@model IEnumerable<MasterScripter.DAL.Models.Machine>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<div class="card-columns">
+    @foreach (var item in Model)
+    {
+        <div class="card text-center">
+            <h5 class="card-header"> 
+                                   <img class="img-fluid img-thumbnail rounded-circle" src="@item.Company.Logo" style="height: 4rem; width: 4rem;"/>
+            </h5>
+
+            <div class="card-body">
+                <h5 class="card-title">
+                    <strong style="font-size: 1rem; font-weight: bold;">@item.VLan- @item.IP</strong> 
+                    <i data-toggle="tooltip" data-placement="top" title="@(item.IsDeleted ? "This machine is disabled" : "This machine is active")"
+                       class="material-icons" style="position: absolute; top: 0; right: 1rem;">@(item.IsDeleted ? "desktop_access_disabled" : "desktop_windows")</i>
+                </h5>
+                <p class="card-text">sone </p>
+                <p class="card-text"><small class="text-muted">Created <span data-toggle="tooltip" data-placement="top" title="@(item.CreationDate)" data-date="@(item.CreationDate)">@item.CreationDate</span></small>
+                </p>
+            </div>
+        </div>
+    }
+</div>
+
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Company.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Country.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsDeleted)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreationDate)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Company.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Country.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsDeleted)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreationDate)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>
+
+<script type="text/javascript">
+    $(function () {
+        $('[data-date]').each(function () {
+            var val = $(this).attr('data-date');
+
+            if (val) {
+                $(this).html(moment(val).fromNow());
+            }
+
+        });
+    });
+</script>

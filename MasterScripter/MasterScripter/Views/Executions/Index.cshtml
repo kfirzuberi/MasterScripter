@@ -42,110 +42,65 @@
 
 }
 
-<h2>Index</h2>
-
-
-<div class="row">
-    <div class="row">
-        <div class="col">
-            <div class="btn-group statuses" role="group" aria-label="status">
-                <button type="button" aria-pressed="false" class="btn btn-outline-primary active">Running</button>
-                <button type="button" aria-pressed="false" class="btn btn-outline-success active">Succeeded</button>
-                <button type="button" aria-pressed="false" class="btn btn-outline-secondary active">Waiting</button>
-                <button type="button" aria-pressed="false" class="btn btn-outline-danger active">Failed</button>
-            </div> 
+<div class="container container-fluid">
+    <div class="row statuses">
+        <div class="col-md-3">
+            <button type="button" aria-pressed="false" class="btn btn-block btn-outline-primary active">Running</button>
+        </div>
+        <div class="col-md-3">       
+            <button type="button" aria-pressed="false" class="btn btn-block btn-outline-success active">Succeeded</button>
+        </div>
+        <div class="col-md-3">    
+            <button type="button" aria-pressed="false" class="btn btn-block btn-outline-secondary active">Waiting</button>
+        </div>
+        <div class="col-md-3">    
+            <button type="button" aria-pressed="false" class="btn btn-block btn-outline-danger active">Failed</button>
         </div>
     </div>
-    <div class="row">
-        <div class="col">
-            <div class="btn-group order-time" role="group" aria-label="Basic example">
-                <button type="button" aria-pressed="false" class="btn btn-info active">Creation Date</button>
-                <button type="button" aria-pressed="false" class="btn btn-info">Start Time</button>
-                <button type="button" aria-pressed="false" class="btn btn-info">End Time</button>
-                <button type="button" aria-pressed="false" class="btn btn-info">Schedule Time</button>
-            </div>
+
+    <div class="row  order-time">
+        <div class="col-md-3">            
+            <button type="button" aria-pressed="false" class="btn btn-block btn-info active">Creation Date</button>
+        </div>
+        <div class="col-md-3">          
+            <button type="button" aria-pressed="false" class="btn btn-block btn-info">Start Time</button>
+        </div>
+        <div class="col-md-3">        
+            <button type="button" aria-pressed="false" class="btn btn-block btn-info">End Time</button>
+        </div>
+        <div class="col-md-3">      
+            <button type="button" aria-pressed="false" class="btn btn-block btn-info">Schedule Time</button>
         </div>
     </div>
-    <div class="col-md-12">
-        <div class="page-header" id="executionsTimeline">
-            <h1>Timeline</h1>
+
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-10">
+            <div class="page-header" id="executionsTimeline">
+                <h1>Timeline</h1>
+            </div>
         </div>
-        <!-- <ul class="timeline">
-        @foreach (var item in Model)
-        {
-            <li class="timeline-item">
-                <div class="timeline-badge @(GetCssClass(item.Status, "bg-"))">
-                    <i class="material-icons">@(GetIconText(item.Status))</i>
-                </div>
+        <div class="col-md-2"></div>
+    </div>
+</div>
 
-                <div class="timeline-panel card @(GetCssClass(item.Status, "border-"))">
-                    <div class="timeline-heading card-header bg-transparent @(GetCssClass(item.Status, "border-"))">
-                        <h4 class="timeline-title">@Html.DisplayFor(modelItem => item.Machine.IP)</h4>
-                        <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 11 hours ago via Twitter</small>
-                        </p>
-
-                    </div>
-                    <div class="card-body @(GetCssClass(item.Status, "text-"))">
-                        <h5 class="card-title">
-                            @Html.DisplayFor(modelItem => item.User.FullName)
-                        </h5>
-                        <p class="timeline-body card-text">
-                            <ul class="list-group list-group-flush">
-                                @foreach (var executionsScripts in item.ExecutionsScriptses)
-                                {
-                                    <li class="list-group-item @(GetCssClass(executionsScripts.Status, "text-"))">
-                                        <i class="material-icons">@(GetIconText(executionsScripts.Status))</i>
-                                        <small>
-                                            @Html.DisplayFor(model => executionsScripts.Script.Name)
-                                        </small>
-                                    </li>
-                                }
-                            </ul>
-                        </p>
-                    </div>
-                    <div class="card-footer bg-transparent @(GetCssClass(item.Status, "border-"))">Footer</div>
-                </div>
-            </li>
-        }
-        <!--<li class="timeline-item">
-            <div class="timeline-badge"><i class="glyphicon glyphicon-check"></i></div>
-            <div class="timeline-panel">
-                <div class="timeline-heading">
-                    <h4 class="timeline-title">Mussum ipsum cacilds 2</h4>
-                    <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 11 hours ago via Twitter</small></p>
-                </div>
-                <div class="timeline-body">
-                    <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros gostis.</p>
-                </div>
+<div class="modal fade" id="executionDetailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-        </li>
-        <li class="timeline-item">
-            <div class="timeline-badge"><i class="glyphicon glyphicon-check"></i></div>
-            <div class="timeline-panel">
-                <div class="timeline-heading">
-                    <h4 class="timeline-title">Mussum ipsum cacilds 3</h4>
-                    <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 11 hours ago via Twitter</small></p>
-                </div>
-                <div class="timeline-body">
-                    <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>
-                    <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>
-
-                </div>
+            <div class="modal-body">
+                
             </div>
-        </li>
-        <li class="timeline-item">
-            <div class="timeline-badge"><i class="glyphicon glyphicon-check"></i></div>
-            <div class="timeline-panel">
-                <div class="timeline-heading">
-                    <h4 class="timeline-title">Mussum ipsum cacilds 4</h4>
-                    <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 11 hours ago via Twitter</small></p>
-                </div>
-                <div class="timeline-body">
-                    <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>
-                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
-        </li>
-        </ul>-->
+        </div>
     </div>
 </div>
 
@@ -155,6 +110,20 @@
         var url = '@Url.Action("GetExecutionTimeline", "Executions")';
 
         $("#executionsTimeline").load(url, { statuses: statuses, order: order });
+
+        $('#executionDetailModal').on('show.bs.modal',
+            function(event) {
+                var button = $(event.relatedTarget); // Button that triggered the modal
+                var id = button.data('whatever').split('_')[1]; // Extract info from data-* attributes
+
+                var url = '@Url.Action("GetExecutionDetail", "Executions")';
+
+                $('#executionDetailModal .modal-body').load(url, { id: id });
+                $('#exampleModalLabel').text('Execution #' + id + ' details');
+
+                var modal = $(this);
+
+            });
     }
 
     var statuses = $('.statuses button.active').toArray().map(elem => $(elem).text().toLowerCase());
@@ -193,69 +162,6 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Machine.IP)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Reason.ReasonName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.User.FullName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreationDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Status)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SrartTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EndTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ScheduleTime)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Machine.IP)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Reason.ReasonName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.User.FullName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreationDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SrartTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EndTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ScheduleTime)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
-
-</table>
 
 

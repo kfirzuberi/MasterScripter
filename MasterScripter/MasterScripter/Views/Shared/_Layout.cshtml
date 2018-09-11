@@ -11,6 +11,8 @@
 @Scripts.Render("~/bundles/popper")
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/bootstrap")
+    <script type="text/javascript" src="@Url.Content("~/Scripts/moment.js")"></script>
+
 @RenderSection("scripts", required: false)
 
 </head>
@@ -43,6 +45,15 @@
                             <a class="dropdown-item" href="#">Separated link</a>
                         </div>
                     </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Machines</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="@Url.Action("Index", "Machines")">View</a>
+                            <a class="dropdown-item" href="@Url.Action("Create", "Machines")">Add new</a>
+                        </div>
+                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="@Url.Action("About", "Home")">About</a>
                     </li>
@@ -52,10 +63,7 @@
                     <li class="nav-item">
                         <a class="nav-link disabled" href="#">Disabled</a>
                     </li>
-                    <li class="nav-item">
-                        @Html.Partial("_LoginPartial")
-
-                    </li>
+                    @Html.Partial("_LoginPartial")
                 </ul>
             </div>
         </div>
@@ -66,18 +74,16 @@
 
 <div class="container body-content" style="padding-top: 11rem;">
     @RenderBody()
+    
+    <script type="text/javascript">
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
     <hr/>
     <footer>
-        <div class="card mb-4">
-            <div class="card-body">
-                <h5 class="card-title text-center">
-                    <i class="material-icons">computer</i>
-                </h5>
-                <div class="card-footer text-muted">
-                    <strong> Created on</strong>
-                </div>
-            </div>
-        </div>
+
+
 
         <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
     </footer>

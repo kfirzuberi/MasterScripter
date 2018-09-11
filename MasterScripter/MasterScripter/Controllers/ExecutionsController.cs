@@ -46,6 +46,20 @@ namespace MasterScripter.Controllers
             ViewBag.UserId = new SelectList(db.Users, "Id", "FullName");
             return View();
         }
+        public ActionResult GetExecutionDetail(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Execution execution = db.Executions.Find(id);
+            if (execution == null)
+            {
+                return HttpNotFound();
+            }
+        
+            return PartialView("Details", execution);
+        }
 
         public ActionResult GetExecutionTimeline(ICollection<Execution> executions, ICollection<string> statuses, string order)
         {

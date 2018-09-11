@@ -119,6 +119,7 @@ namespace MasterScripter.Controllers
         {
             if (ModelState.IsValid)
             {
+                script.CreationDate = DateTime.Now;
                 script.Version++;
                 db.Scripts.Add(script);
                 db.SaveChanges();
