@@ -26,18 +26,32 @@ namespace MasterScripter.Controllers
         }
 
         // GET: Machines/Details/5
-        public ActionResult Details(string id)
+        public ActionResult Details(string ip, int? vlan)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(ip) || vlan == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Machine machine = db.Machines.Find(id);
+            Machine machine = db.Machines.Find(ip, vlan);
             if (machine == null)
             {
                 return HttpNotFound();
             }
             return View(machine);
+        }
+
+        public ActionResult GetMachineDetails(string ip, int? vlan)
+        {
+            if (string.IsNullOrEmpty(ip) || vlan == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Machine machine = db.Machines.Find(ip, vlan);
+            if (machine == null)
+            {
+                return HttpNotFound();
+            }
+            return PartialView("Details", machine);
         }
 
         // GET: Machines/Create

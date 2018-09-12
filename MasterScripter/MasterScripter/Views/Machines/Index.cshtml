@@ -1,77 +1,79 @@
-﻿@model IEnumerable<MasterScripter.DAL.Models.Machine>
+﻿@using MasterScripter.DAL.Models
+@model IEnumerable<MasterScripter.DAL.Models.Machine>
 
 @{
     ViewBag.Title = "Index";
 }
 
 <h2>Index</h2>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-9">
+            <div class="card-columns">
+                @foreach (var item in Model)
+                {
+                    <div class="card text-center">
+                        <h5 class="card-header"> 
+                            <img class="img-fluid img-thumbnail rounded-circle" src="@item.Company.Logo" style="height: 3.5rem; width: 3.5rem;"/>
+                        </h5>
 
-<div class="card-columns">
-    @foreach (var item in Model)
-    {
-        <div class="card text-center">
-            <h5 class="card-header"> 
-                                   <img class="img-fluid img-thumbnail rounded-circle" src="@item.Company.Logo" style="height: 4rem; width: 4rem;"/>
-            </h5>
-
-            <div class="card-body">
-                <h5 class="card-title">
-                    <strong style="font-size: 1rem; font-weight: bold;">@item.VLan- @item.IP</strong> 
-                    <i data-toggle="tooltip" data-placement="top" title="@(item.IsDeleted ? "This machine is disabled" : "This machine is active")"
-                       class="material-icons" style="position: absolute; top: 0; right: 1rem;">@(item.IsDeleted ? "desktop_access_disabled" : "desktop_windows")</i>
-                </h5>
-                <p class="card-text">sone </p>
-                <p class="card-text"><small class="text-muted">Created <span data-toggle="tooltip" data-placement="top" title="@(item.CreationDate)" data-date="@(item.CreationDate)">@item.CreationDate</span></small>
-                </p>
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <strong style="font-size: 1rem; font-weight: bold;">@item.IP</strong>  <small style="font-size: 0.8rem; font-weight: bold;">(@item.VLan)</small>
+                                <i data-toggle="tooltip" data-placement="top" title="@(item.IsDeleted ? "This machine is disabled" : "This machine is active")"
+                                   class="material-icons" style="position: absolute; top: 0; left: 1rem;">@(item.IsDeleted ? "desktop_access_disabled" : "desktop_windows")</i>
+                                
+                           
+                                <button type="button" class="btn btn-primary bmd-btn-icon" 
+                                         data-toggle="modal" data-target="#machimesDetailModal" data-whatever="@("Machine_"+item.IP +"_" + item.VLan)" style="position: absolute; right: 1rem; top: 1rem;">
+                                    <i data-toggle="tooltip" data-placement="top" title="More info" style="line-height: 1" class="material-icons">more_vert</i>
+                                </button>
+                            </h5>
+                            <p class="card-text">
+                                <ul class="list-group list-group-flush" style="padding: 0">
+                                    <li class="list-group-item" style="padding: 0">
+                                        <i class="material-icons md-18" style="margin-right: 0">language</i> Located in @item.Country.Name
+                                    </li>
+                                    <li class="list-group-item" style="padding: 0">
+                                        <i class="material-icons md-18" style="margin-right: 0">access_time</i> <strong>Pending executions</strong> @item.Executions.Count(s => s.Status==Status.Waiting)
+                                    </li>
+                                    <li class="list-group-item" style="padding: 0">
+                                        <i class="material-icons md-18" style="margin-right: 0">directions_run</i> <strong>Running executions</strong> @item.Executions.Count(s => s.Status==Status.Running)
+                                    </li>
+                                    <li class="list-group-item" style="padding: 0">
+                                        <i class="material-icons md-18" style="margin-right: 0">widgets</i><strong> Total executions</strong> @item.Executions.Count()
+                                    </li>
+                                </ul>
+                            </p>
+                            <p class="card-text"><small class="text-muted">Created <span data-toggle="tooltip" data-placement="top" title="@(item.CreationDate)" data-date="@(item.CreationDate)">@item.CreationDate</span></small>
+                            </p>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
-    }
+        <div class="col-md-3">Place holder for map</div>
+    </div>
 </div>
 
+<div class="modal fade" id="machimesDetailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+          @*      <h5 class="modal-title" id="exampleModalLabel"></h5>*@
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Company.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Country.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsDeleted)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreationDate)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Company.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Country.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsDeleted)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreationDate)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-        </td>
-    </tr>
-}
-
-</table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
     $(function () {
@@ -84,4 +86,19 @@
 
         });
     });
+
+    $('#machimesDetailModal').on('show.bs.modal',
+        function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var ip = button.data('whatever').split('_')[1]; // Extract info from data-* attributes
+            var vlan = button.data('whatever').split('_')[2]; // Extract info from data-* attributes
+
+            var url = '@Url.Action("GetMachineDetails", "Machines")';
+
+            $('#machimesDetailModal .modal-body').load(url, { ip: ip, vlan: vlan });
+           // $('#exampleModalLabel').text('Execution #' + id + ' details');
+
+            var modal = $(this);
+
+        });
 </script>

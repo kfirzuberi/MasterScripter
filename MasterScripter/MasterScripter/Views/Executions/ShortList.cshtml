@@ -1,0 +1,66 @@
+﻿@using MasterScripter.DAL.Models
+@model IEnumerable<MasterScripter.DAL.Models.Execution>
+
+@functions{
+
+    public string GetIconText(Status status)
+    {
+        switch (status)
+        {
+            case Status.Running:
+                return "directions_run";
+            case Status.Succeeded:
+                return "done";
+            case Status.Failed:
+                return "error_outline";
+            case Status.Waiting:
+            default:
+                return "access_time";
+        }
+    }
+
+    public string GetCssClass(Status status, string prefix = "")
+    {
+        switch (status)
+        {
+            case Status.Running:
+                return prefix + "primary";
+            case Status.Succeeded:
+                return prefix + "success";
+            case Status.Failed:
+                return prefix + "danger";
+            case Status.Waiting:
+            default:
+                return prefix + "secondary";
+        }
+    }
+
+}
+
+<table class="table">
+    <thead>
+    <tr>
+        <th style=""></th>
+        <th style="" scope="col">@Html.LabelFor(modelItem => modelItem.First().Id)</th>
+        <th style="" scope="col">@Html.LabelFor(modelItem => modelItem.First().Status)</th>
+        <th style="" scope="col">@Html.LabelFor(modelItem => modelItem.First().User.FullName)</th>
+        <th style="" scope="col">@Html.LabelFor(modelItem => modelItem.First().CreationDate)</th>
+        <th style="" scope="col">@Html.LabelFor(modelItem => modelItem.First().Reason.ReasonName)</th>
+        <th style="" scope="col">Number of scripts</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td><i class="material-icons md-18" style="line-height: 1px;">@GetIconText(item.Status)</i></td>
+            <th scope="row">@Html.DisplayFor(modelItem => item.Id)</th>
+            <td>@Html.DisplayFor(modelItem => item.Status)</td>
+            <td>@Html.DisplayFor(modelItem => item.User.FullName)</td>
+            <td data-date="@Html.DisplayFor(modelItem => item.CreationDate)" data-toggle="tooltip" data-placement="top" title="@Html.DisplayFor(modelItem => item.CreationDate)">@Html.DisplayFor(modelItem => item.CreationDate)</td>
+            <td>@Html.DisplayFor(modelItem => item.Reason.ReasonName)</td>
+            <td>@item.ExecutionsScriptses.Count()</td>
+         </tr>
+    }
+    </tbody>
+</table>

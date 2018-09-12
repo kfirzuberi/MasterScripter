@@ -4,47 +4,68 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h6>Machine Details @Model.IP (@Model.VLan)</h6>
 
-<div>
-    <h4>Machine</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Company.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Company.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Country.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Country.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IsDeleted)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.IsDeleted)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CreationDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CreationDate)
-        </dd>
-
-    </dl>
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-4">
+                <strong>
+                    @Html.DisplayNameFor(model => model.IP)
+                </strong>
+                @Html.DisplayFor(model => model.IP)
+            </div>
+            <div class="col-4">
+                <strong>
+                    @Html.DisplayNameFor(model => model.VLan)
+                </strong>
+                @Html.DisplayFor(model => model.VLan)
+            </div>
+            <div class="col-4">
+                <strong>
+                    Company Name
+                    @*@Html.DisplayNameFor(model => model.Company.Name)*@
+                </strong>
+                @Html.DisplayFor(model => model.Company.Name)
+            </div>
+            <div class="col-4">
+                <strong>
+                    Location
+                    @*@Html.DisplayNameFor(model => model.Country.Name)*@
+                </strong>
+                @Html.DisplayFor(model => model.Country.Name)
+            </div>
+            <div class="col-4">
+                <strong>
+                    @Html.DisplayNameFor(model => model.CreationDate)
+                </strong>
+                <span data-date="@Html.DisplayFor(model => model.CreationDate)" data-toggle="tooltip" data-placement="top" title="@Html.DisplayFor(model => model.CreationDate)">
+                    @Html.DisplayFor(model => model.CreationDate)
+                </span>
+            </div>
+            <div class="col-4">
+                <strong>
+                    State 
+                    @*@Html.DisplayNameFor(model => model.IsDeleted)*@
+                </strong>
+              @( Model.IsDeleted ? "Machine disabled" : "Machine Active")
+            </div>
+        </div>
+    </div>
 </div>
+
+<div class="card" style="margin-top: 10px;">
+    <div class="card-body">
+        <h5 class="card-title">
+            Executions
+        </h5>
+        @Html.Partial("~/Views/Executions/ShortList.cshtml", Model.Executions)
+    </div>
+</div>
+
+@*
 <p>
     @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+*@

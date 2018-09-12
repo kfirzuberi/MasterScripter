@@ -110,21 +110,21 @@
         var url = '@Url.Action("GetExecutionTimeline", "Executions")';
 
         $("#executionsTimeline").load(url, { statuses: statuses, order: order });
-
-        $('#executionDetailModal').on('show.bs.modal',
-            function(event) {
-                var button = $(event.relatedTarget); // Button that triggered the modal
-                var id = button.data('whatever').split('_')[1]; // Extract info from data-* attributes
-
-                var url = '@Url.Action("GetExecutionDetail", "Executions")';
-
-                $('#executionDetailModal .modal-body').load(url, { id: id });
-                $('#exampleModalLabel').text('Execution #' + id + ' details');
-
-                var modal = $(this);
-
-            });
     }
+
+    $('#executionDetailModal').on('show.bs.modal',
+        function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var id = button.data('whatever').split('_')[1]; // Extract info from data-* attributes
+
+            var url = '@Url.Action("GetExecutionDetail", "Executions")';
+
+            $('#executionDetailModal .modal-body').load(url, { id: id });
+            $('#exampleModalLabel').text('Execution #' + id + ' details');
+
+            var modal = $(this);
+
+        });
 
     var statuses = $('.statuses button.active').toArray().map(elem => $(elem).text().toLowerCase());
     var order = $('.order-time button.active').first().text().toLowerCase();

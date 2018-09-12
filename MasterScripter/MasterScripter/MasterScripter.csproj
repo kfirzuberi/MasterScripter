@@ -318,6 +318,7 @@
     <Content Include="Views\Machines\Details.cshtml" />
     <Content Include="Views\Machines\Edit.cshtml" />
     <Content Include="Views\Machines\Index.cshtml" />
+    <Content Include="Views\Executions\ShortList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
