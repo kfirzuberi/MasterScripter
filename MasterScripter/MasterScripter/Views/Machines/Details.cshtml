@@ -3,9 +3,6 @@
 @{
     ViewBag.Title = "Details";
 }
-
-<h6>Machine Details @Model.IP (@Model.VLan)</h6>
-
 <div class="card">
     <div class="card-body">
         <div class="row">
@@ -55,8 +52,8 @@
 </div>
 
 <div class="card" style="margin-top: 10px;">
-    <div class="card-body">
-        <h5 class="card-title">
+    <div class="card-body" style="overflow: auto; max-height: 20rem;">
+        <h5 class="card-title" style="font-size: 1rem;">
             Executions
         </h5>
         @Html.Partial("~/Views/Executions/ShortList.cshtml", Model.Executions)

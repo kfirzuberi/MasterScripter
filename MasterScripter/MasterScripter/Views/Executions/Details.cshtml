@@ -109,7 +109,7 @@
             </tr>
             </thead>
             <tbody>
-            @foreach (var item in Model.ExecutionsScriptses)
+            @foreach (var item in Model.ExecutionsScriptses.OrderBy(scripts => scripts.Order))
             {
                 <tr>
                     <td><i class="material-icons md-18" style="line-height: 1px;">@GetIconText(item.Status)</i></td>
