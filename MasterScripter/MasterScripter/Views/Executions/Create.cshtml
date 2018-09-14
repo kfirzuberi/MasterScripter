@@ -10,6 +10,9 @@
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.MachineIP)
+    @Html.HiddenFor(model => model.MachineVLan)
     
     <div class="form-horizontal">
         <h4>Execution</h4>
@@ -72,18 +75,20 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.MachineVLan, "MachineVLan", htmlAttributes: new { @class = "control-label col-md-2" })
+   Machine
             <div class="col-md-10">
-                @Html.DropDownList("MachineVLan", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.MachineVLan, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                <div class="dropdown" id="dropdownMachines">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMachinesButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Select Machine
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="max-height: 20rem; overflow: auto;">
+                    @foreach (var machine in ViewBag.Machines)
+                    {
+                        <a class="dropdown-item" href="#" machine-ip="@machine.IP" machine-vlan="@machine.VLan">@machine.IP (@machine.VLan)</a>
+                    }
+                    </div>
+                </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.MachineIP, "MachineIP", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("MachineIP", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.MachineIP, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -102,3 +107,19 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+
+<script type="text/javascript">
+    $(function () {
+        // set on click event for each element item
+        $("#dropdownMachines .dropdown-menu  a.dropdown-item").click(function () {
+
+            // update the text of the seleced item
+            $("#dropdownMachinesButton").text($(this).text());
+            $("#dropdownMachinesButton").val($(this).text());
+
+            // update the IP and the VLan data
+            $("#MachineVLan").val($(this).attr("machine-vlan"));
+            $("#MachineIP").val($(this).attr("machine-ip"));
+        });
+    });
+</script>
