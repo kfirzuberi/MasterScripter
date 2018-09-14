@@ -41,6 +41,7 @@ namespace MasterScripter.Controllers
         // GET: Executions/Create
         public ActionResult Create()
         {
+            ViewBag.Scripts =  db.Scripts;
             ViewBag.Machines =  db.Machines;
             ViewBag.ReasonId = new SelectList(db.Reasons, "Id", "ReasonName");
             ViewBag.UserId = new SelectList(db.Users, "Id", "FullName");
