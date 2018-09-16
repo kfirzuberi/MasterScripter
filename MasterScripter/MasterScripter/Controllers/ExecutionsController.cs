@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MasterScripter.DAL.Models;
 using MasterScripter.Models;
+//$('#sortable2 li').toArray().map(x=>  $(x).attr("sid") +"_"+ $(x).attr("sver")).join(",")
 
 namespace MasterScripter.Controllers
 {
@@ -106,8 +108,15 @@ namespace MasterScripter.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,CreationDate,Status,SrartTime,EndTime,ScheduleTime,UserId,ReasonId,MachineVLan,MachineIP")] Execution execution)
         {
+
             if (ModelState.IsValid)
             {
+                execution.CreationDate = DateTime.Now;
+                execution.Status = Status.Waiting;
+               
+                if (!String.IsNullOrEmpty(Request.Form.Get("ScheduleTime"))){
+                    execution.ScheduleTime = DateTime.ParseExact(Request.Form.Get("ScheduleTime"), "DD/MM/YYYY HH:mm", CultureInfo.InvariantCulture);
+                }
                 db.Executions.Add(execution);
                 db.SaveChanges();
                 return RedirectToAction("Index");

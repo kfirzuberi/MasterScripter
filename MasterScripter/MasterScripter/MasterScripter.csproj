@@ -270,6 +270,7 @@
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\Schedule.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="videos\staticsvideo.mp4" />
     <Content Include="Web.config" />
