@@ -9,6 +9,7 @@
 </div>
 <p>Dor</p>
 
+<div id="analytics-view"></div>
 
 <div class="row">
     <div class="col-md-4">
@@ -31,3 +32,17 @@
         <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
     </div>
 </div>
+
+<script type="text/javascript">
+    var url = '@Url.Action("Index","Analytics")';
+
+    $('#analytics-view').load(url, function(a,b,c) {
+        debugger;
+    });;
+
+</script>
+
+
+   
+
+    

@@ -1,0 +1,63 @@
+﻿@using MasterScripter.DAL.Models
+@model MasterScripter.Models.AnalyticsViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@functions{
+
+    public string GetIconText(Status status)
+    {
+        switch (status)
+        {
+            case Status.Running:
+                return "directions_run";
+            case Status.Succeeded:
+                return "done";
+            case Status.Failed:
+                return "error_outline";
+            case Status.Waiting:
+            default:
+                return "access_time";
+        }
+    }
+
+    public string GetCssClass(Status status, string prefix = "")
+    {
+        switch (status)
+        {
+            case Status.Running:
+                return prefix + "primary";
+            case Status.Succeeded:
+                return prefix + "success";
+            case Status.Failed:
+                return prefix + "danger";
+            case Status.Waiting:
+            default:
+                return prefix + "secondary";
+        }
+    }
+
+}
+
+<div class="container-fluid">
+    <div class="row">
+        @foreach (var s in Enum.GetValues(typeof(Status)).Cast<Status>())
+        {
+                <div class="col-md-3">
+                    <div class="card text-center">
+                        <div class="card-body text-dark">
+                            <h6 class="">@s Executions</h6>
+                            <i class="material-icons md-48 @GetCssClass(s, "text-")">@GetIconText(s)</i>
+                            <p class="card-text">
+                                <h3>@(Model.TotalStatuses.ContainsKey(s) ? Model.TotalStatuses[s]: 0)</h3>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            
+        }
+        
+    </div>
+</div>
