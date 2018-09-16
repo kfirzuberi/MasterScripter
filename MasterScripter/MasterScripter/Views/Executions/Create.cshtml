@@ -4,122 +4,121 @@
     ViewBag.Title = "Create";
 }
 
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 <h2>Create</h2>
+<div class="row">
+    <div class="col-md-4">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.HiddenFor(model => model.MachineIP)
+            @Html.HiddenFor(model => model.MachineVLan)
+
+            <div class="form-horizontal">
+                <h4>Execution</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
 
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-
-    @Html.HiddenFor(model => model.MachineIP)
-    @Html.HiddenFor(model => model.MachineVLan)
-    
-    <div class="form-horizontal">
-        <h4>Execution</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.CreationDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreationDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CreationDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EnumDropDownListFor(model => model.Status, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.SrartTime, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.SrartTime, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SrartTime, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.EndTime, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ScheduleTime, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ScheduleTime, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ScheduleTime, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserId, "UserId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("UserId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ReasonId, "ReasonId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("ReasonId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ReasonId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-   Machine
-            <div class="col-md-10">
-                <div class="dropdown" id="dropdownMachines">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMachinesButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Select Machine
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="max-height: 20rem; overflow: auto;">
-                    @foreach (var machine in ViewBag.Machines)
-                    {
-                        <a class="dropdown-item" href="#" machine-ip="@machine.IP" machine-vlan="@machine.VLan">@machine.IP (@machine.VLan)</a>
-                    }
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ScheduleTime, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ScheduleTime, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ScheduleTime, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ReasonId, "ReasonId", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("ReasonId", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ReasonId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    Machine
+                    <div class="col-md-10">
+                        <div class="dropdown" id="dropdownMachines">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMachinesButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Select Machine
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="max-height: 20rem; overflow: auto;">
+                                @foreach (var machine in ViewBag.Machines)
+                                {
+                                    <a class="dropdown-item" href="#" machine-ip="@machine.IP" machine-vlan="@machine.VLan">@machine.IP (@machine.VLan)</a>
+                                }
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        }
+        </div>
+    <div class="col-md-8">
+        <div class="row">
+            <div class="col-md-6 jumbotron" style="padding-top:1rem; padding-bottom:1rem;">
+                <h5>Script List</h5>
+                <ul id="sortable1" class="connectedSortable border border-primary" style="height: 55vh; overflow: auto;    padding: 0.3rem;">
+                    @foreach (var script in ViewBag.Scripts)
+                    {
+                        <li class="ui-state-default m-1" style="list-style-type: none; cursor:pointer;">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <h5 class="card-title">@script.Name (@script.Version)</h5>
+                                    <p class="card-text">@script.Description</p>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <div class="col-md-6 jumbotron" style="padding-top:1rem; padding-bottom:1rem;">
+                <h5>Scripts to Execution</h5>
+                <ul id="sortable2" class="connectedSortable border border-primary" style="height: 55vh; overflow: auto;     padding: 0.3rem;"></ul>
             </div>
         </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
+     </div>
 </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+    
 
-<script type="text/javascript">
-    $(function () {
-        // set on click event for each element item
-        $("#dropdownMachines .dropdown-menu  a.dropdown-item").click(function () {
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
 
-            // update the text of the seleced item
-            $("#dropdownMachinesButton").text($(this).text());
-            $("#dropdownMachinesButton").val($(this).text());
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
 
-            // update the IP and the VLan data
-            $("#MachineVLan").val($(this).attr("machine-vlan"));
-            $("#MachineIP").val($(this).attr("machine-ip"));
+    <script type="text/javascript">
+        $(function () {
+            // set on click event for each element item
+            $("#dropdownMachines .dropdown-menu  a.dropdown-item").click(function () {
+
+                // update the text of the seleced item
+                $("#dropdownMachinesButton").text($(this).text());
+                $("#dropdownMachinesButton").val($(this).text());
+
+                // update the IP and the VLan data
+                $("#MachineVLan").val($(this).attr("machine-vlan"));
+                $("#MachineIP").val($(this).attr("machine-ip"));
+            });
         });
-    });
-</script>
+
+        $(function () {
+            $("#sortable1, #sortable2").sortable({
+                connectWith: ".connectedSortable"
+            }).disableSelection();
+        });
+
+    </script>

@@ -13,10 +13,10 @@
 
 <div class="row">
     <div class="col-md-4">
-        <ul class="list-group">
+        <ul id="scriptlist" class="list-group">
             @foreach (var item in Model)
             {
-                <li id="@( item.Id + "_" + item.Version )" class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
+                <li sid="@item.Id" sver="@item.Version" class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
                     @Html.DisplayFor(modelItem => item.Name)
                     <span class="badge badge-primary badge-pill">
                         @Html.DisplayFor(modelItem => item.Version)
@@ -34,13 +34,12 @@
     <script type="text/javascript">
         var url = '@Url.Action("GetScriptDetail", "Scripts")';
 
-        $('.list-group-item').click(function (event) {
-            $('.list-group-item').removeClass('active');
+        $('#scriptlist .list-group-item').click(function (event) {
+            $('#scriptlist .list-group-item').removeClass('active');
             $(this).addClass('active');
-            var params = event.target.id.split('_'); // convert from id_version to [id, version]
-            $('#scriptDetail').load(url, { id: params[0], version: params[1] });
+            $('#scriptDetail').load(url, { id: $(this).attr("sid"), version: $(this).attr("sver") });
         });
 
-        $('.list-group-item').first().click();
+        $('#scriptlist .list-group-item').first().click();
     </script>
 </div>
