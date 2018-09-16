@@ -288,3 +288,13 @@ textarea {
     border-left-color: #6c757d;
     border-right-color: #6c757d;
 }
+
+#background-video {
+    width: 100%;
+    position: fixed;
+    left: 0;
+    top: 7rem;
+    height: 100%;
+    opacity: 0.1;
+    object-fit: fill;
+}
