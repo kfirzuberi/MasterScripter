@@ -12,8 +12,8 @@ namespace MasterScripter.Models
         public Dictionary<Status, int> TotalStatuses { get; set; }
         public Dictionary<Reason, int> TotalReasons { get; set; }
         public Dictionary<Country, int> TotalCountries { get; set; }
-        public Dictionary<string, int> TotalMachines { get; set; }
+        public Dictionary<Machine, int> TotalMachines { get; set; }
+        public Tuple<int, int, int> MachinesState { get; set; }
         public Dictionary<DateTime, int> TotalExecutionsPerDay { get; set; }
-        public Dictionary<DateTime, TimeSpan> AvgExecutionsDuration { get; set; }
     }
 }

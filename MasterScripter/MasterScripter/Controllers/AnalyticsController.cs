@@ -25,19 +25,31 @@ namespace MasterScripter.Controllers
             Dictionary<Country, int> totalCountries = db.Machines.ToList().GroupBy(execution => execution.Country)
                 .ToList().ToDictionary(input => input.Key, grouping => grouping.Count());
 
+            Dictionary<Machine, int> totalMachine = db.Executions.ToList().GroupBy(execution => execution.Machine)
+                .ToList().ToDictionary(input => input.Key, grouping => grouping.Count());
+
 
             var myData = from log in db.Executions
                 group log by EntityFunctions.TruncateTime(log.CreationDate) into g
                 orderby g.Key
                 select new { CreateTime = g.Key, Count = g.Count() };
 
-            Dictionary<DateTime?, int> rr = myData.ToList().ToDictionary(i=>i.CreateTime, i=>i.Count);
+
+            Tuple<int, int, int> states = new Tuple<int, int, int>(db.Machines.Count(),
+                db.Machines.Count(m => !m.IsDeleted),
+                db.Machines.Count(m => m.IsDeleted));
+          
+
+            Dictionary<DateTime, int> totalExecutionsPerDay = myData.ToList().Where(i=>i.CreateTime!=null).ToDictionary(i=>(DateTime)i.CreateTime, i=>i.Count);
 
             AnalyticsViewModel analyticsViewModel = new AnalyticsViewModel()
             {
                 TotalStatuses =  totalStatuses,
                 TotalCountries = totalCountries,
-                TotalReasons = totalReasons
+                TotalReasons = totalReasons,
+                TotalExecutionsPerDay = totalExecutionsPerDay,
+                TotalMachines = totalMachine,
+                MachinesState = states
             };
 
             return PartialView(analyticsViewModel);

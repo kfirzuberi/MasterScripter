@@ -5,59 +5,45 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-9">
-            <div class="card-columns">
-                @foreach (var item in Model)
-                {
-                    <div class="card text-center">
-                        <h5 class="card-header"> 
-                            <img class="img-fluid img-thumbnail rounded-circle" src="@item.Company.Logo" style="height: 3.5rem; width: 3.5rem;"/>
-                        </h5>
 
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <strong style="font-size: 1rem; font-weight: bold;">@item.IP</strong>  <small style="font-size: 0.8rem; font-weight: bold;">(@item.VLan)</small>
-                                <i data-toggle="tooltip" data-placement="top" title="@(item.IsDeleted ? "This machine is disabled" : "This machine is active")"
-                                   class="material-icons" style="position: absolute; top: 0; left: 1rem;">@(item.IsDeleted ? "desktop_access_disabled" : "desktop_windows")</i>
-                                
-                           
-                                <button type="button" class="btn btn-primary bmd-btn-icon" 
-                                         data-toggle="modal" data-target="#machimesDetailModal" data-whatever="@("Machine_"+item.IP +"_" + item.VLan)" style="position: absolute; right: 1rem; top: 1rem;">
-                                    <i data-toggle="tooltip" data-placement="top" title="More info" style="line-height: 1" class="material-icons">more_vert</i>
-                                </button>
-                            </h5>
-                            <p class="card-text">
-                                <ul class="list-group list-group-flush" style="padding: 0">
-                                    <li class="list-group-item" style="padding: 0">
-                                        <i class="material-icons md-18" style="margin-right: 0">language</i> Located in @item.Country.Name
-                                    </li>
-                                    <li class="list-group-item" style="padding: 0">
-                                        <i class="material-icons md-18" style="margin-right: 0">access_time</i> <strong>Pending executions</strong> @item.Executions.Count(s => s.Status==Status.Waiting)
-                                    </li>
-                                    <li class="list-group-item" style="padding: 0">
-                                        <i class="material-icons md-18" style="margin-right: 0">directions_run</i> <strong>Running executions</strong> @item.Executions.Count(s => s.Status==Status.Running)
-                                    </li>
-                                    <li class="list-group-item" style="padding: 0">
-                                        <i class="material-icons md-18" style="margin-right: 0">widgets</i><strong> Total executions</strong> @item.Executions.Count()
-                                    </li>
-                                </ul>
-                            </p>
-                            <p class="card-text"><small class="text-muted">Created <span data-toggle="tooltip" data-placement="top" title="@(item.CreationDate)" data-date="@(item.CreationDate)">@item.CreationDate</span></small>
-                            </p>
-                        </div>
+
+<div class="card" style=" height: 30vh; width: 99vw; position: absolute; top: 21vh; left: 0.5rem;">
+    <div id="googleMap" style="height: 100%; width: 100%;"></div> 
+</div>
+
+<div class="container-fluid" style="    top: 53vh; position: absolute; left: 0.5rem; width: 99%;  max-height: 45vh;  overflow: auto;">
+    <div class="row" style="">
+        <div class="card-columns" style="column-count: 7">
+            @foreach (var item in Model)
+            {
+                <div class="card text-center machine-detail" machine-ip="@item.IP" machine-vlan="@item.VLan" machine-lon="@item.Country.Lon" machine-lat="@item.Country.Lat">
+                    <h5 class="card-header">
+                        <img class="img-fluid img-thumbnail rounded-circle" src="@item.Company.Logo" style="height: 3.5rem; width: 3.5rem;"/>
+                    </h5>
+
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <strong style="font-size: 1rem; font-weight: bold;">@item.IP</strong> <small style="font-size: 0.8rem; font-weight: bold;">(@item.VLan)</small>
+                            <i data-toggle="tooltip" data-placement="top" title="@(item.IsDeleted ? "This machine is disabled" : "This machine is active")"
+                               class="material-icons @(item.IsDeleted ?"text-danger":"text-success")" style="position: absolute; top: 0; left: 1rem;">@(item.IsDeleted ? "phonelink_off" : "phonelink")</i>
+
+
+                            <button type="button" class="btn btn-primary bmd-btn-icon"
+                                    data-toggle="modal" data-target="#machimesDetailModal" data-whatever="@("Machine_" + item.IP + "_" + item.VLan)" style="position: absolute; right: 1rem; top: 1rem;">
+                                <i data-toggle="tooltip" data-placement="top" title="More info" style="line-height: 1" class="material-icons">more_vert</i>
+                            </button>
+                        </h5>
+                        <p class="card-text"><small class="text-muted">Created <span data-toggle="tooltip" data-placement="top" title="@(item.CreationDate)" data-date="@(item.CreationDate)">@item.CreationDate</span></small>
+                        </p>
                     </div>
-                }
-            </div>
+                </div>
+            }
         </div>
-        <div class="col-md-3">Place holder for map</div>
     </div>
 </div>
 
 <div class="modal fade" id="machimesDetailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document" style="min-height: calc(115% - (1.75rem * 2));">
         <div class="modal-content">
             <div class="modal-header">
                 <h6 id="exampleModalLabel"></h6>
@@ -69,6 +55,7 @@
 
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="editMachine" >Edit</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -76,6 +63,14 @@
 </div>
 
 <script type="text/javascript">
+
+    $('#editMachine').click(e => {
+        var url = '@Url.Action("Edit", "Machines")';
+
+        url += '?ip=' + $('#exampleModalLabel').attr('ip') + '&vlan=' + $('#exampleModalLabel').attr('vlan');
+        window.location.replace( location.origin + url);
+    });
+
     $(function () {
         $('[data-date]').each(function () {
             var val = $(this).attr('data-date');
@@ -97,8 +92,72 @@
 
             $('#machimesDetailModal .modal-body').load(url, { ip: ip, vlan: vlan });
             $('#exampleModalLabel').text('Machine Details ' + ip  +'('+vlan +')');
+            $('#exampleModalLabel').attr('ip', ip); 
+            $('#exampleModalLabel').attr('vlan', vlan); 
 
             var modal = $(this);
 
         });
 </script>
+
+
+<script type="text/javascript">
+
+    function GetMap(parameters) {
+        var icon = location.origin + '/images/marker-icon.png';
+        var iconSelected = location.origin + '/images/marker-icon-selected.png';
+
+        window.map = new Microsoft.Maps.Map('#googleMap',
+            {
+                credentials: 'As2jKJ-6dOcZEB8bhfFcF6FMAkc8tmX5AQyXSrsGark-mIYfh5YGvATS4ntLJqRa',
+                center: new Microsoft.Maps.Location(24.454377327147014, -2.721990915834307),
+                mapTypeId: Microsoft.Maps.MapTypeId.aerial,
+                zoom: 3
+            });
+
+        var machines = $('.card.machine-detail').toArray().map(x => Object.assign({},
+            {
+                ip: $(x).attr('machine-ip'),
+                vlan: $(x).attr('machine-vlan'),
+                lon: $(x).attr('machine-lon'),
+                lat: $(x).attr('machine-lat')
+            }));
+
+        window.markers = {};
+
+        machines.forEach(machine => {
+            var pin = new Microsoft.Maps.Pushpin(new Microsoft.Maps.Location(machine.lat, machine.lon),
+                {
+                    icon: icon,
+                    anchor: new Microsoft.Maps.Point(12, 39)
+                });
+
+            window.markers[machine.ip + '_' + machine.vlan] = {
+                marker: pin
+            }
+
+
+            //Add the pushpin to the map
+            window.map.entities.push(pin);
+        });
+
+        $('.card.machine-detail').hover(e => {//in
+                var item = window.markers[$(e.currentTarget).attr('machine-ip') + '_' + $(e.currentTarget).attr('machine-vlan')];
+
+                if (item) {
+                    item.marker._setImage(iconSelected);
+                }
+            },
+            e => {//out
+                var item = window.markers[$(e.currentTarget).attr('machine-ip') + '_' + $(e.currentTarget).attr('machine-vlan')];
+
+                if (item) {
+                    item.marker._setImage(icon);
+                }
+            });
+
+    }
+
+</script>
+
+<script type="text/javascript" src="http://www.bing.com/api/maps/mapcontrol?callback=GetMap&branch=experimental&key=As2jKJ-6dOcZEB8bhfFcF6FMAkc8tmX5AQyXSrsGark-mIYfh5YGvATS4ntLJqRa" async defer></script>

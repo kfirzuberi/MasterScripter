@@ -18,6 +18,7 @@
         @Html.HiddenFor(model => model.IP)
 
         @Html.HiddenFor(model => model.VLan)
+        @Html.HiddenFor(model => model.CreationDate)
 
         <div class="form-group">
             @Html.LabelFor(model => model.IsDeleted, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -34,14 +35,6 @@
             <div class="col-md-10">
                 @Html.DropDownList("CompanyCode", null, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.CompanyCode, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CreationDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreationDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CreationDate, "", new { @class = "text-danger" })
             </div>
         </div>
 

@@ -82,13 +82,13 @@ namespace MasterScripter.Controllers
         }
 
         // GET: Machines/Edit/5
-        public ActionResult Edit(string id)
+        public ActionResult Edit(string ip, int? vlan)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(ip) || vlan == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Machine machine = db.Machines.Find(id);
+            Machine machine = db.Machines.Find(ip, vlan);
             if (machine == null)
             {
                 return HttpNotFound();
