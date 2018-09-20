@@ -122,6 +122,7 @@ namespace MasterScripter.Controllers
             {
                 execution.CreationDate = DateTime.Now;
                 execution.Status = Status.Waiting;
+                execution.UserId = db.Users.First().Id;
                
                 if (!String.IsNullOrEmpty(Request.Form.Get("ScheduleTime"))){
                     execution.ScheduleTime = DateTime.ParseExact(Request.Form.Get("ScheduleTime"), "DD/MM/YYYY HH:mm", CultureInfo.InvariantCulture);
@@ -129,10 +130,13 @@ namespace MasterScripter.Controllers
                 var scriptsListVal = Request.Form.Get("ScriptsList");
                 if (!String.IsNullOrEmpty(scriptsListVal))
                 {
-                    var execSripts = scriptsListVal.Split(',').ToList()
-                        .ConvertAll<ExecutionsScripts>(s => new ExecutionsScripts() {
-                            ScriptId =int.Parse( s.Split('_')[0]),
-                            ScriptVersion = int.Parse( s.Split('_')[1])
+                    var i = 0;
+                    execution.ExecutionsScriptses = scriptsListVal.Split(',').ToList()
+                        .ConvertAll(s => new ExecutionsScripts() {
+                            ScriptId = int.Parse(s.Split('_')[0]),
+                            ScriptVersion = int.Parse(s.Split('_')[1]),
+                            Order = ++i,
+                            Status = Status.Waiting
                         });
                    
                 }
