@@ -17,6 +17,8 @@
             @Html.HiddenFor(model => model.MachineIP)
             @Html.HiddenFor(model => model.MachineVLan)
 
+            <input type="text" id="ScriptsList" name="ScriptsList" style="display:none" />
+
             <div class="form-horizontal">
                 <h4>Execution</h4>
                 <hr />
@@ -25,8 +27,8 @@
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.ScheduleTime, htmlAttributes: new { @class = "control-label col-md-2" })
-                   <div class="col-md-10">
-                       <input type="text" id="ScheduleTime" class="form-control" name="ScheduleTime" />
+                    <div class="col-md-10">
+                        <input type="text" id="ScheduleTime" class="form-control" name="ScheduleTime" />
                     </div>
                 </div>
 
@@ -117,7 +119,12 @@
 
     $(function () {
         $("#sortable1, #sortable2").sortable({
-            connectWith: ".connectedSortable"
+            connectWith: ".connectedSortable",
+            update: function (event, ui) {
+                $("#ScriptsList").val($('#sortable2 li').toArray().map(x => $(x).attr("sid") + "_" + $(x).attr("sver")).join(","));
+            },
+           
+            
         }).disableSelection();
     });
 

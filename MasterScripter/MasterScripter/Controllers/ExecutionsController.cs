@@ -43,7 +43,16 @@ namespace MasterScripter.Controllers
         // GET: Executions/Create
         public ActionResult Create()
         {
-            ViewBag.Scripts =  db.Scripts;
+            
+        
+            var grouppedScripts = db.Scripts.Include(s => s.FileType).Include(s => s.User)
+                  .OrderBy(script => script.Version)
+                  .GroupBy(script => script.Id).ToList();
+
+            var scripts = grouppedScripts.Select(s => s.Last()).ToList();
+            ViewBag.Scripts = scripts.ToList();
+            
+
             ViewBag.Machines =  db.Machines;
             ViewBag.ReasonId = new SelectList(db.Reasons, "Id", "ReasonName");
             ViewBag.UserId = new SelectList(db.Users, "Id", "FullName");
@@ -116,6 +125,16 @@ namespace MasterScripter.Controllers
                
                 if (!String.IsNullOrEmpty(Request.Form.Get("ScheduleTime"))){
                     execution.ScheduleTime = DateTime.ParseExact(Request.Form.Get("ScheduleTime"), "DD/MM/YYYY HH:mm", CultureInfo.InvariantCulture);
+                }
+                var scriptsListVal = Request.Form.Get("ScriptsList");
+                if (!String.IsNullOrEmpty(scriptsListVal))
+                {
+                    var execSripts = scriptsListVal.Split(',').ToList()
+                        .ConvertAll<ExecutionsScripts>(s => new ExecutionsScripts() {
+                            ScriptId =int.Parse( s.Split('_')[0]),
+                            ScriptVersion = int.Parse( s.Split('_')[1])
+                        });
+                   
                 }
                 db.Executions.Add(execution);
                 db.SaveChanges();
