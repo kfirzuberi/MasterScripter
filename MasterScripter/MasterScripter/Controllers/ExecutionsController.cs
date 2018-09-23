@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MasterScripter.DAL.Models;
 using MasterScripter.Models;
+//$('#sortable2 li').toArray().map(x=>  $(x).attr("sid") +"_"+ $(x).attr("sver")).join(",")
 
 namespace MasterScripter.Controllers
 {
@@ -41,7 +43,16 @@ namespace MasterScripter.Controllers
         // GET: Executions/Create
         public ActionResult Create()
         {
-            ViewBag.Scripts =  db.Scripts;
+            
+        
+            var grouppedScripts = db.Scripts.Include(s => s.FileType).Include(s => s.User)
+                  .OrderBy(script => script.Version)
+                  .GroupBy(script => script.Id).ToList();
+
+            var scripts = grouppedScripts.Select(s => s.Last()).ToList();
+            ViewBag.Scripts = scripts.ToList();
+            
+
             ViewBag.Machines =  db.Machines;
             ViewBag.ReasonId = new SelectList(db.Reasons, "Id", "ReasonName");
             ViewBag.UserId = new SelectList(db.Users, "Id", "FullName");
@@ -106,8 +117,29 @@ namespace MasterScripter.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,CreationDate,Status,SrartTime,EndTime,ScheduleTime,UserId,ReasonId,MachineVLan,MachineIP")] Execution execution)
         {
+
             if (ModelState.IsValid)
             {
+                execution.CreationDate = DateTime.Now;
+                execution.Status = Status.Waiting;
+                execution.UserId = db.Users.First().Id;
+               
+                if (!String.IsNullOrEmpty(Request.Form.Get("ScheduleTime"))){
+                    execution.ScheduleTime = DateTime.ParseExact(Request.Form.Get("ScheduleTime"), "DD/MM/YYYY HH:mm", CultureInfo.InvariantCulture);
+                }
+                var scriptsListVal = Request.Form.Get("ScriptsList");
+                if (!String.IsNullOrEmpty(scriptsListVal))
+                {
+                    var i = 0;
+                    execution.ExecutionsScriptses = scriptsListVal.Split(',').ToList()
+                        .ConvertAll(s => new ExecutionsScripts() {
+                            ScriptId = int.Parse(s.Split('_')[0]),
+                            ScriptVersion = int.Parse(s.Split('_')[1]),
+                            Order = ++i,
+                            Status = Status.Waiting
+                        });
+                   
+                }
                 db.Executions.Add(execution);
                 db.SaveChanges();
                 return RedirectToAction("Index");

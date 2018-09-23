@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Create";
 }
+<script type="text/javascript" src="~/Scripts/Schedule.js"></script>
 
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
@@ -16,6 +17,8 @@
             @Html.HiddenFor(model => model.MachineIP)
             @Html.HiddenFor(model => model.MachineVLan)
 
+            <input type="text" id="ScriptsList" name="ScriptsList" style="display:none" />
+
             <div class="form-horizontal">
                 <h4>Execution</h4>
                 <hr />
@@ -25,8 +28,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.ScheduleTime, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.ScheduleTime, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.ScheduleTime, "", new { @class = "text-danger" })
+                        <input type="text" id="ScheduleTime" class="form-control" name="ScheduleTime" />
                     </div>
                 </div>
 
@@ -63,7 +65,7 @@
                 </div>
             </div>
         }
-        </div>
+    </div>
     <div class="col-md-8">
         <div class="row">
             <div class="col-md-6 jumbotron" style="padding-top:1rem; padding-bottom:1rem;">
@@ -71,7 +73,7 @@
                 <ul id="sortable1" class="connectedSortable border border-primary" style="height: 55vh; overflow: auto;    padding: 0.3rem;">
                     @foreach (var script in ViewBag.Scripts)
                     {
-                        <li class="ui-state-default m-1" style="list-style-type: none; cursor:pointer;">
+                        <li sid="@script.Id" sver="@script.Version" class="ui-state-default m-1" style="list-style-type: none; cursor:pointer;">
                             <div class="card text-center">
                                 <div class="card-body">
                                     <h5 class="card-title">@script.Name (@script.Version)</h5>
@@ -85,40 +87,48 @@
             <div class="col-md-6 jumbotron" style="padding-top:1rem; padding-bottom:1rem;">
                 <h5>Scripts to Execution</h5>
                 <ul id="sortable2" class="connectedSortable border border-primary" style="height: 55vh; overflow: auto;     padding: 0.3rem;"></ul>
+                <h6 id="scriptsCount" >Total Scripts: 0</h6>
             </div>
         </div>
-     </div>
+    </div>
 </div>
 
-    
 
-    <div>
-        @Html.ActionLink("Back to List", "Index")
-    </div>
 
-    @section Scripts {
-        @Scripts.Render("~/bundles/jqueryval")
-    }
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
 
-    <script type="text/javascript">
-        $(function () {
-            // set on click event for each element item
-            $("#dropdownMachines .dropdown-menu  a.dropdown-item").click(function () {
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
 
-                // update the text of the seleced item
-                $("#dropdownMachinesButton").text($(this).text());
-                $("#dropdownMachinesButton").val($(this).text());
+<script type="text/javascript">
+    $(function () {
+        // set on click event for each element item
+        $("#dropdownMachines .dropdown-menu  a.dropdown-item").click(function () {
 
-                // update the IP and the VLan data
-                $("#MachineVLan").val($(this).attr("machine-vlan"));
-                $("#MachineIP").val($(this).attr("machine-ip"));
-            });
+            // update the text of the seleced item
+            $("#dropdownMachinesButton").text($(this).text());
+            $("#dropdownMachinesButton").val($(this).text());
+
+            // update the IP and the VLan data
+            $("#MachineVLan").val($(this).attr("machine-vlan"));
+            $("#MachineIP").val($(this).attr("machine-ip"));
         });
+    });
 
-        $(function () {
-            $("#sortable1, #sortable2").sortable({
-                connectWith: ".connectedSortable"
-            }).disableSelection();
-        });
+    $(function () {
+        $("#sortable1, #sortable2").sortable({
+            connectWith: ".connectedSortable",
+            update: function (event, ui) {
+                $("#ScriptsList").val($('#sortable2 li').toArray().map(x => $(x).attr("sid") + "_" + $(x).attr("sver")).join(","));
+                $('#scriptsCount').text('Total Scripts: ' + $('#sortable2 li').length)
+            },
+           
+            
+        }).disableSelection();
+    });
 
-    </script>
+    $('#ScheduleTime').bootstrapMaterialDatePicker({ format: 'DD/MM/YYYY HH:mm',minDate: new Date() });
+</script>
