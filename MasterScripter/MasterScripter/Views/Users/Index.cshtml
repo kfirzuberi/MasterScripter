@@ -4,6 +4,24 @@
     ViewBag.Title = "Index";
 }
 
+@functions 
+{
+    public string getSrcFromRole(MasterScripter.DAL.Models.User user )
+    {
+        switch (user.Role)
+        {
+            case MasterScripter.DAL.Models.Role.Admin:
+                return "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZN71NulH2LUr7_rXdfixO-l8zor6Ix-9ICb9aXiEUqWZPpvwe4Q";
+
+            case MasterScripter.DAL.Models.Role.Manager:
+                return "https://cdn3.iconfinder.com/data/icons/education-210/49/100-512.png";
+            case MasterScripter.DAL.Models.Role.Viewer:
+            default:
+                return user.Company.Logo;
+        }
+    }
+}
+
 <h2>Index</h2>
 
 <p>
@@ -18,8 +36,8 @@
                 <div class="card text-center" us-id="@item.Id">
                     <h5 class="card-header">
                         <!-- TODO: change image according item role -->
-                        <img class="img-fluid img-thumbnail rounded-circle" 
-                             data-toggle="tooltip" data-placement="top" title="@item.Role" src="@item.Company.Logo" style="height: 3.5rem; width: 3.5rem;" />
+                            <img class="img-fluid img-thumbnail rounded-circle"
+                                 data-toggle="tooltip" data-placement="top" title="@item.Role" src="@(getSrcFromRole(item))" style="height: 3.5rem; width: 3.5rem;" />
                     </h5>
 
                     <div class="card-body">
@@ -42,58 +60,3 @@
         </div>
     </div>
 </div>
-
-
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Company.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FullName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Role)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsDeleted)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreationDate)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Company.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Role)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsDeleted)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreationDate)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
-    }
-
-</table>
