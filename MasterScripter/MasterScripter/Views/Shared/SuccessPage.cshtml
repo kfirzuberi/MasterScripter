@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "Success";
+}
+
+<div class="jumbotron">
+    <h1 class="display-4">The @(ViewBag.ModelName + " " + ViewBag.ItemName), saved successfully!</h1>
+    <i class="material-icons md-48 text-success">done</i>
+</div>
+
+<script type="text/javascript">
+    setTimeout(function() {
+            $('.modal').modal('toggle');
+        },
+        1000);
+</script>

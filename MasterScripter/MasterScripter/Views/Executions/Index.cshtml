@@ -43,45 +43,56 @@
 }
 
 <div class="container container-fluid">
-    <div class="row statuses">
-        <div class="col-md-3">
-            <button type="button" aria-pressed="false" class="btn btn-block btn-outline-primary active">Running</button>
-        </div>
-        <div class="col-md-3">       
-            <button type="button" aria-pressed="false" class="btn btn-block btn-outline-success active">Succeeded</button>
-        </div>
-        <div class="col-md-3">    
-            <button type="button" aria-pressed="false" class="btn btn-block btn-outline-secondary active">Waiting</button>
-        </div>
-        <div class="col-md-3">    
-            <button type="button" aria-pressed="false" class="btn btn-block btn-outline-danger active">Failed</button>
-        </div>
-    </div>
-
-    <div class="row  order-time">
-        <div class="col-md-3">            
-            <button type="button" aria-pressed="false" class="btn btn-block btn-info active">Creation Date</button>
-        </div>
-        <div class="col-md-3">          
-            <button type="button" aria-pressed="false" class="btn btn-block btn-info">Start Time</button>
-        </div>
-        <div class="col-md-3">        
-            <button type="button" aria-pressed="false" class="btn btn-block btn-info">End Time</button>
-        </div>
-        <div class="col-md-3">      
-            <button type="button" aria-pressed="false" class="btn btn-block btn-info">Schedule Time</button>
-        </div>
-    </div>
-
-</div>
-<div class="container">
     <div class="row">
-        <div class="col-md-10">
-            <div class="page-header" id="executionsTimeline">
-                <h1>Timeline</h1>
+        <div class="col-md-1">
+            <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Filter executions by status">filter_list</i>
+        </div>
+        <div class="col-md-11">
+            <div class="row statuses">
+                <div class="col-md-3">
+                    <button type="button" aria-pressed="false" class="btn btn-block btn-outline-primary active">Running</button>
+                </div>
+                <div class="col-md-3">       
+                    <button type="button" aria-pressed="false" class="btn btn-block btn-outline-success active">Succeeded</button>
+                </div>
+                <div class="col-md-3">    
+                    <button type="button" aria-pressed="false" class="btn btn-block btn-outline-secondary active">Waiting</button>
+                </div>
+                <div class="col-md-3">    
+                    <button type="button" aria-pressed="false" class="btn btn-block btn-outline-danger active">Failed</button>
+                </div>
             </div>
         </div>
-        <div class="col-md-2"></div>
+    </div>
+    
+    
+    <div class="row">
+        <div class="col-md-1">
+            <i class="material-icons" data-toggle="tooltip" data-placement="top" title="Sotrt executions by date">sort</i>
+        </div>
+        <div class="col-md-11">
+            <div class="row  order-time">
+                <div class="col-md-3">            
+                    <button type="button" aria-pressed="false" class="btn btn-block btn-info active">Creation Date</button>
+                </div>
+                <div class="col-md-3">          
+                    <button type="button" aria-pressed="false" class="btn btn-block btn-info">Start Time</button>
+                </div>
+                <div class="col-md-3">        
+                    <button type="button" aria-pressed="false" class="btn btn-block btn-info">End Time</button>
+                </div>
+                <div class="col-md-3">      
+                    <button type="button" aria-pressed="false" class="btn btn-block btn-info">Schedule Time</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+</div>
+<div class="container container-fluid">
+    <div class="page-header" id="executionsTimeline">
+        <h1>Timeline</h1>
     </div>
 </div>
 

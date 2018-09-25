@@ -1,0 +1,82 @@
+﻿@model IEnumerable<MasterScripter.DAL.Models.Company>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th scope="col">@Html.DisplayNameFor(model => model.Code)</th>
+        <th scope="col">@Html.DisplayNameFor(model => model.Name)</th>
+        <th scope="col">@Html.DisplayNameFor(model => model.Logo)</th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <th scope="row">@Html.DisplayFor(modelItem => item.Code)</th>
+            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+            <td>
+                <img class="img-fluid img-thumbnail rounded-circle" src="@item.Logo" style="height: 2rem; width: 2rem;"/>
+                @Html.DisplayFor(modelItem => item.Logo)
+            </td>
+            <td>
+                <button type="button" class="btn btn-primary bmd-btn-icon"
+                        data-toggle="modal" data-target="#companiesModal" cid="@item.Code" data-whatever="@("CompanyEdit_" + item.Code)">
+                    <i data-toggle="tooltip" data-placement="top" title="@($"Edit {item.Name} row")" style="line-height: 1" class="material-icons">edit</i>
+                </button>
+            </td>
+        </tr>
+    }
+
+    <tr>
+        <th></th>
+        <td></td>
+        <td></td>
+        <td>
+            <button type="button" class="btn btn-primary bmd-btn-icon"
+                    data-toggle="modal" data-target="#companiesModal"  data-whatever="@("CompanyAdd_")">
+                <i data-toggle="tooltip" data-placement="top" title="Add New company" style="line-height: 1" class="material-icons">add</i>
+            </button>
+        </td>
+    </tr>
+
+    </tbody>
+</table>
+
+<div class="modal fade" id="companiesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document" style="min-height: calc(115% - (1.75rem * 2));">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 id="exampleModalLabel"></h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#companiesModal').on('show.bs.modal',
+        function(event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            var data = button.data('whatever').split('_');
+
+            var url = data[0] === 'CompanyEdit'? ('@Url.Action("Edit", "Companies")' + '/' + data[1]):
+                '@Url.Action("Create","Companies")';
+
+            $('#companiesModal .modal-body').load(url);
+        });
+</script>
+
+
