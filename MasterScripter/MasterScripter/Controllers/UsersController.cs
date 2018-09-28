@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using MasterScripter.DAL.Models;
 using MasterScripter.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace MasterScripter.Controllers
 {
@@ -20,6 +22,26 @@ namespace MasterScripter.Controllers
         {
             var users = db.Users.Include(u => u.Company);
             return View(users.ToList());
+        }
+
+        public ActionResult GetUnconnectedUsers()
+        {
+            var dbusers = db.Users.Include(u => u.Company).ToList(); // gel all existing users.
+
+            var users = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().Users.ToList(); // get all registered users.
+
+            var unconnectedUserst = users.Where(u=>!dbusers
+            .Any(dbu=>dbu.Email.ToLower().Equals(u.Email.ToLower()))).ToList() // get all unregistered users
+                .ConvertAll(u=>new User() // convert to User object
+                {
+                    FullName = u.UserName,
+                    Email = u.Email,
+                    IsDeleted = true
+                });
+
+            ViewBag.IsUnconnectedUsers = true;
+
+            return View("Index", unconnectedUserst.ToList());
         }
 
         // GET: Users/Details/5
@@ -44,6 +66,16 @@ namespace MasterScripter.Controllers
             return View();
         }
 
+        // GET: Users/Create
+        public ActionResult Connect(string username, string email) // same as Create, but send known data.
+        {
+            ViewBag.CompanyCode = new SelectList(db.Companies, "Code", "Name");
+            ViewBag.UserName = username;
+            ViewBag.Email = email;
+
+            return View("Create");
+        }
+
         // POST: Users/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
@@ -53,6 +85,8 @@ namespace MasterScripter.Controllers
         {
             if (ModelState.IsValid)
             {
+                user.CreationDate = DateTime.Now;
+                user.IsDeleted = false;
                 db.Users.Add(user);
                 db.SaveChanges();
                 return RedirectToAction("Index");

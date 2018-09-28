@@ -1,0 +1,71 @@
+﻿@model IEnumerable<MasterScripter.DAL.Models.Comment>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@functions
+{
+
+    public string TruncaeFullName(string fullName)
+    {
+        var indexOf = fullName.IndexOf(' ');
+        return indexOf > 0 ? $"{fullName.Substring(0, 1)}{fullName.Substring(indexOf + 1, 1)}" : fullName.Substring(0, 2);
+    }
+
+}
+
+<div class="container">
+    <div class="messaging">
+        <div class="inbox_msg">
+            <div class="mesgs">
+                <div class="msg_history">
+                    @foreach (var item in Model)
+                    {
+                        if (item.UserId == 1)
+                        {
+                            <div class="incoming_msg">
+                                <div class="incoming_msg_img"><h5 class="bg-primary rounded-circle" data-toggle="tooltip" data-placement="right"
+                                                                  title="@(item.User.FullName + '(' + item.User.Role+')')"
+                                                                  style="">
+                                        @(TruncaeFullName(item.User.FullName))</h5>
+                                    <!--  <img class="img_msg" src="https://ptetutorials.com/images/user-profile.png" alt="sunil">-->
+                                </div>
+                                <div class="received_msg">
+                                    <div class="received_withd_msg">
+                                        <p>@item.Content</p>
+                                        <span class="time_date" data-date="@item.CreationDate"  data-toggle="tooltip" data-placement="right" title="@(item.CreationDate)"> 11:01 AM    |    June 9</span> </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="outgoing_msg">
+                                <div class="sent_msg">
+                                    <p>@item.Content</p>
+                                    <span class="time_date" data-date="@item.CreationDate"  data-toggle="tooltip" data-placement="left" title="@(item.CreationDate)"> 11:01 AM    |    June 9</span> </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $('[data-date]').each(function () {
+            var val = $(this).attr('data-date');
+
+            if (val) {
+                $(this).html(moment(val).fromNow());
+            }
+
+        });
+    });
+
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>

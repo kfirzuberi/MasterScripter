@@ -116,7 +116,7 @@
 </div>
 
 <script type="text/javascript">
-    
+
     function updateTimeLine(collection, statuses, order) {
         var url = '@Url.Action("GetExecutionTimeline", "Executions")';
 
@@ -126,12 +126,20 @@
     $('#executionDetailModal').on('show.bs.modal',
         function (event) {
             var button = $(event.relatedTarget); // Button that triggered the modal
-            var id = button.data('whatever').split('_')[1]; // Extract info from data-* attributes
+            var data = button.data('whatever').split('_');
+            var id =data[1]; // Extract info from data-* attributes
 
-            var url = '@Url.Action("GetExecutionDetail", "Executions")';
 
-            $('#executionDetailModal .modal-body').load(url, { id: id });
-            $('#exampleModalLabel').text('Execution #' + id + ' details');
+            if (data[0] === 'ExecutionConversion') {
+                $('#executionDetailModal .modal-body').load('@Url.Action("GetConversion", "Comments")', { executionid: id });
+                $('#exampleModalLabel').text('Execution #' + id + ' chat');
+
+
+            } else {
+                $('#executionDetailModal .modal-body').load('@Url.Action("GetExecutionDetail", "Executions")', { id: id });
+                $('#exampleModalLabel').text('Execution #' + id + ' details');
+            }
+
 
             var modal = $(this);
 

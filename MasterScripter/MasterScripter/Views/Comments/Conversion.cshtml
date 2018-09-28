@@ -1,0 +1,53 @@
+﻿
+<div class="container-fluid">
+    <div id="loading" class="row align-content-center loading-div">
+    </div>
+    <div id="chat"></div>
+    <div id="inputMsg" class="row container">
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <input type="text" name="ExecutionId" value="@ViewBag.Executionid" style="display: none" />
+    <div class="input-group mb-3">
+        <input type="text" name="Content" class="form-control" placeholder="Type a message" aria-label="Type a message" aria-describedby="basic-addon2" style="max-width: none;">
+        <button type="submit" class="btn btn-primary bmd-btn-fab bmd-btn-fab-sm">
+            <i class="material-icons" style="line-height: 1">send</i>
+        </button>
+    </div>
+
+}
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function loadContent(parameters) {
+        var url = '@Url.Action("CommentsByExecution", "Comments")';
+        $('#inputMsg').hide();
+        $('#loading').show();
+        $('#chat').load(url, { executionid: @ViewBag.Executionid },
+            function(data) {
+                $('#inputMsg').show();
+                $('#loading').hide();
+            });  
+    }
+
+    loadContent();
+
+    $('#inputMsg form').submit(function(event) {
+        $.ajax({
+            url: '@Url.Action("Create", "Comments")',
+            type: 'post',
+            data: $(this).serialize(),
+            success: function(result) {
+                loadContent();
+            }
+        });
+
+        event.preventDefault();
+    });
+
+
+</script>

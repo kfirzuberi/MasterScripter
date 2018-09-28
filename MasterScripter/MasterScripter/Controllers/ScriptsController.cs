@@ -27,6 +27,17 @@ namespace MasterScripter.Controllers
             return View(scripts.ToList());
         }
 
+        public ActionResult IndexView()
+        {
+            var grouppedScripts = db.Scripts.Include(s => s.FileType).Include(s => s.User)
+                .OrderBy(script => script.Version)
+                .GroupBy(script => script.Id).ToList();
+
+            var scripts = grouppedScripts.Select(s => s.Last()).ToList();
+
+            return View("Index",scripts.ToList());
+        }
+
         // GET: Scripts/Details/5
         public ActionResult Details(int? id, int? version)
         {
@@ -68,7 +79,7 @@ namespace MasterScripter.Controllers
             {
                 db.Scripts.Add(script);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("IndexView");
             }
 
             ViewBag.FileTypeId = new SelectList(db.FileTypes, "Id", "Language", script.FileTypeId);
@@ -123,7 +134,7 @@ namespace MasterScripter.Controllers
                 script.Version++;
                 db.Scripts.Add(script);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("IndexView");
             }
             ViewBag.FileTypeId = new SelectList(db.FileTypes, "Id", "Language", script.FileTypeId);
             ViewBag.UserId = new SelectList(db.Users, "Id", "FullName", script.UserId);
@@ -153,7 +164,7 @@ namespace MasterScripter.Controllers
             Script script = db.Scripts.Find(id);
             db.Scripts.Remove(script);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("IndexView");
         }
 
         protected override void Dispose(bool disposing)

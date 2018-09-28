@@ -16,26 +16,24 @@
             case MasterScripter.DAL.Models.Role.Manager:
                 return "https://cdn3.iconfinder.com/data/icons/education-210/49/100-512.png";
             case MasterScripter.DAL.Models.Role.Viewer:
-            default:
                 return user.Company.Logo;
+            default:
+                return "http://shop.atotalapproach.com/wp-content/uploads/2017/02/UnknownUser.jpg";
         }
     }
 }
-
-<h2>Index</h2>
-
+<!--
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-
+-->
 <div class="container-fluid">
     <div class="row">
         <div class="card-columns" style="column-count: 3">
             @foreach (var item in Model)
             {
-                <div class="card text-center" us-id="@item.Id">
+                <div class="card text-center" us-id="@item.Id" style="min-width: 13rem;">
                     <h5 class="card-header">
-                        <!-- TODO: change image according item role -->
                             <img class="img-fluid img-thumbnail rounded-circle"
                                  data-toggle="tooltip" data-placement="top" title="@item.Role" src="@(getSrcFromRole(item))" style="height: 3.5rem; width: 3.5rem;" />
                     </h5>
@@ -44,16 +42,24 @@
                         <h5 class="card-title">
                             <strong style="font-size: 1rem; font-weight: bold;">@item.FullName</strong>
                             <br />
-                            <small style="font-size: 0.8rem; font-weight: bold;">@item.Company.Name</small>
-                            <i data-toggle="tooltip" data-placement="top" title="@(item.IsDeleted ? "This user is disabled" : "This user is active")"
-                               class="material-icons @(item.IsDeleted ?"text-danger":"text-success")" style="position: absolute; top: 0; left: 1rem;">@(item.IsDeleted ? "person_outline" : "person")</i>
+                            <small style="font-size: 0.8rem; font-weight: bold;">@(item.CompanyCode!=0 ? item.Company.Name : "- -")</small>
+                            <i data-toggle="tooltip" data-placement="top" title="@((item.IsDeleted) ? "This user is disabled" : "This user is active")"
+                               class="material-icons @((item.IsDeleted) ?"text-danger":"text-success")" style="position: absolute; top: 0; left: 1rem;">@(item.IsDeleted ? "person_outline" : "person")</i>
 
                         </h5>
                         <p class="card-text">
                             <small class="text-muted"> @item.Email </small>
                         </p>
-                        <a href="@Url.Action("Edit","Users", new { id = item.Id })" class="card-link">Edit</a>
-                        <a href="@Url.Action("Details", "Users", new { id = item.Id })" class="card-link">Show related data</a>
+                        @if (ViewBag.IsUnconnectedUsers== true)
+                        {
+                            <a href="@Url.Action("Connect", "Users", new {username = item.FullName, email = item.Email})" class="card-link">Connect User</a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Edit", "Users", new {id = item.Id})" class="card-link">Edit</a>
+                            <a href="@Url.Action("Details", "Users", new {id = item.Id})" class="card-link">Show related data</a>
+                        }
+              
                     </div>
                 </div>
             }

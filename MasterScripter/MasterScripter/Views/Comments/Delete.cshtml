@@ -1,4 +1,4 @@
-﻿@model MasterScripter.DAL.Models.Script
+﻿@model MasterScripter.DAL.Models.Comment
 
 @{
     ViewBag.Title = "Delete";
@@ -8,15 +8,15 @@
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>Script</h4>
+    <h4>Comment</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.FileType.Language)
+            @Html.DisplayNameFor(model => model.Execution.MachineIP)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.FileType.Language)
+            @Html.DisplayFor(model => model.Execution.MachineIP)
         </dd>
 
         <dt>
@@ -36,35 +36,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.CreationDate)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.CreationDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Cost)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Cost)
         </dd>
 
     </dl>
@@ -74,7 +50,7 @@
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "IndexView")
+            @Html.ActionLink("Back to List", "Index")
         </div>
     }
 </div>

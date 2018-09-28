@@ -49,8 +49,14 @@
             <div class="timeline-panel card @(GetCssClass(item.Status, "border-")) @(GetCssClass(item.Status, "text-"))" style="border-width: 2px;">
             
                 <button type="button" class="btn btn-primary bmd-btn-icon" data-toggle="modal" data-target="#executionDetailModal" data-whatever="@("Execution_"+item.Id)" style="position: absolute; right: 0.5rem; top: 0.5rem;">
-                    <i style="line-height: 1" class="material-icons">more_vert</i>
+                    <i style="line-height: 1" class="material-icons"  data-toggle="tooltip" data-placement="top" title="See more details">more_vert</i>
                 </button>
+                
+                
+                <button type="button" class="btn btn-primary bmd-btn-icon" data-toggle="modal" data-target="#executionDetailModal" data-whatever="@("ExecutionConversion_" + item.Id)" style="position: absolute; right: 0.5rem; bottom: 0.5rem;">
+                    <i style="line-height: 1" class="material-icons" data-toggle="tooltip" data-placement="top" title="@((item.Comments.Count > 0)? $"{item.Comments.Count} comments" : "Start new conversion")">chat</i>
+                </button>
+             
 
                 <div class="timeline-heading card-header bg-transparent @(GetCssClass(item.Status, "border-"))" style="padding-bottom: 0px;">
                     <h4 class="timeline-title">
