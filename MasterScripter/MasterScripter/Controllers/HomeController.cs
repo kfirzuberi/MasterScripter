@@ -20,6 +20,13 @@ namespace MasterScripter.Controllers
             return View();
         }
 
+        public ActionResult NotConnectedYet()
+        {
+            //ViewBag.Message = "Your application description page.";
+
+            return View("NotConnectedYet");
+        }
+
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";

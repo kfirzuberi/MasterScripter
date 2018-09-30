@@ -26,21 +26,28 @@ namespace MasterScripter.Controllers
 
         public ActionResult GetUnconnectedUsers()
         {
-            var dbusers = db.Users.Include(u => u.Company).ToList(); // gel all existing users.
+            // Gel all Users from our DB.
+            var dbusers = db.Users.Include(u => u.Company).ToList();
 
-            var users = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().Users.ToList(); // get all registered users.
+            // Get all registered users (Users from the template DB).
+            var users = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>().Users.ToList(); 
 
-            var unconnectedUserst = users.Where(u=>!dbusers
-            .Any(dbu=>dbu.Email.ToLower().Equals(u.Email.ToLower()))).ToList() // get all unregistered users
-                .ConvertAll(u=>new User() // convert to User object
+            // Get the new Users (unconnected) -
+            // Filter the Users that exist in the template DB and not exist in our DB (Filter by email)
+            // And create a new list of Users (our model)
+            var unconnectedUserst = users
+                .Where(u=>!dbusers.Any(dbu=>dbu.Email.ToLower().Equals(u.Email.ToLower()))).ToList() // emails that don't exist
+                .ConvertAll(u=>new User() // convert to our User object model
                 {
                     FullName = u.UserName,
                     Email = u.Email,
                     IsDeleted = true
                 });
 
+            // Send to the View a "Flag" that indicates that this is a Unconected users list
             ViewBag.IsUnconnectedUsers = true;
 
+            // Return the Indec view BUT(!!) send the genreated list
             return View("Index", unconnectedUserst.ToList());
         }
 
