@@ -199,6 +199,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="BL\Utils\Actions.cs" />
     <Compile Include="BL\Utils\PermissionManager.cs" />
+    <Compile Include="BL\Utils\QueueManager.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AnalyticsController.cs" />
     <Compile Include="Controllers\CommentsController.cs" />
@@ -207,6 +208,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MachinesController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\QueueManagerController.cs" />
     <Compile Include="Controllers\ScriptsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
@@ -220,6 +222,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AnalyticsViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\LogMessage.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MasterScripterContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -352,6 +355,8 @@
     <Content Include="Views\Comments\Index.cshtml" />
     <Content Include="Views\Comments\Conversion.cshtml" />
     <Content Include="Views\Shared\NotConnectedYet.cshtml" />
+    <Content Include="Views\QueueManager\Index.cshtml" />
+    <Content Include="Views\Analytics\Logger.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

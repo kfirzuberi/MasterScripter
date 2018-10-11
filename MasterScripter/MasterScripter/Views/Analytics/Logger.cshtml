@@ -1,0 +1,27 @@
+﻿<div>
+    <ul style="font-size: 0.8rem; max-height: 250px; overflow-x: auto" id="logUl">
+      
+    </ul>
+</div>   
+<script type="text/javascript">
+    var icons = ['info', 'error', 'done'];
+    var classes = ['info', 'danger', 'success'];
+    setInterval(function () {
+        $.get('@Url.Action("GetStatus", "QueueManager")').success(function (parameters) {
+            if (parameters && parameters.log) {
+                var items = parameters.log.map(item => {
+                    return '<li class="text-' + classes[item.Type] + '">' +
+                        '<span>[' + moment(parseInt(item.Time.replace('/Date(', '').replace(')/', ''))).format('HH:mm') + ']</span>' +
+                        '<i class="material-icons" style="font-size: 0.8rem;">'+icons[item.Type]+'</i>' +
+                        item.Message +
+                        '</li>';
+                });
+
+                items.forEach(item => {
+                    $('#logUl').append(item);
+                });
+            }
+            console.log(parameters);
+        });
+    }, 2000);
+</script>

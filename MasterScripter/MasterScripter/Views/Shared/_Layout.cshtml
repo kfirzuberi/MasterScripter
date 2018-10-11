@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using System.Web.Script.Serialization
+@using MasterScripter.Models
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -31,9 +33,7 @@
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Scripts</a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="@Url.Action("IndexView", "Scripts")">View</a>
-                            <a class="dropdown-item" href="@Url.Action("Create", "Scripts")">Add new</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Separated link</a>
+                            <a class="dropdown-item" allow-view="2" href="@Url.Action("Create", "Scripts")">Add new</a>
                         </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -50,7 +50,7 @@
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Machines</a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="@Url.Action("Index", "Machines")">View</a>
-                            <a class="dropdown-item" href="@Url.Action("Create", "Machines")">Add new</a>
+                            <a class="dropdown-item" allow-view="1" href="@Url.Action("Create", "Machines")">Add new</a>
                         </div>
                     </li>
                     
@@ -61,15 +61,12 @@
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="@Url.Action("Index", "Users")">Users</a>
                             <a class="dropdown-item" href="@Url.Action("GetUnconnectedUsers", "Users")">Unconnecte Users</a>
-                        
+                            
+                            <div class="dropdown-divider"></div>
+                            <a id="startQueue" class="dropdown-item" href="#">Start Queue</a>
+                            <a id="stopQueue" class="dropdown-item" href="#">Stop Queue</a>
+                            <a id="addToTheQueue" class="dropdown-item" href="#">Add new to the Queue</a>
                         </div>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("About", "Home")">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="@Url.Action("Contact", "Home")">Contact</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link disabled" href="#">Disabled</a>
@@ -90,15 +87,71 @@
         $(function () {
             $('[data-toggle="tooltip"]').tooltip();
         });
+
+        $('#startQueue').click(function(parameters) {
+
+            $.get('@Url.Action("StartQueue", "QueueManager")').success(function (parameters) {
+               
+                $("#startQueue").prop("disabled", true);
+            });
+        });
+
+        $('#stopQueue').click(function (parameters) {
+            $.get('@Url.Action("StopQueue", "QueueManager")').success(function (parameters) {
+                
+                $("#stopQueue").prop("disabled", true);
+            });
+        });
+
+        $('#addToTheQueue').click(function (parameters) {
+            $.get('@Url.Action("AddToTheQueue", "QueueManager")').success(function (parameters) {
+            
+            });
+        });
     </script>
     <hr/>
     <footer>
-
-
-
+      
         <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
     </footer>
 </div>
+    
+
+    @functions
+{
+
+        public string GetCurrentUser()
+        {
+            MasterScripterContext db = new MasterScripterContext();
+            MasterScripter.DAL.Models.User user = db.Users.FirstOrDefault(u => u.Email.Equals(User.Identity.Name));
+            if (user != null)
+            {
+                return new JavaScriptSerializer().Serialize(new { id = user.Id, name= user.FullName, role= user.Role, email= user.Email });
+            }
+
+            return new JavaScriptSerializer().Serialize(new { id = "", name ="", role = "", email = "" });
+        }
+
+    }
+
+<script type="text/javascript">
+
+    var user = '@GetCurrentUser()';
+
+    window.userInfo = JSON.parse(user.replace(/&quot;/g, '"'));;
+
+    sessionStorage.setItem("userInfoId", window.userInfo.id);
+    sessionStorage.setItem("userInfoName", window.userInfo.name);
+    sessionStorage.setItem("userInfoRole", window.userInfo.role);
+    sessionStorage.setItem("userInfoEmail", window.userInfo.email);
+
+    if (window.userInfo.role === 3) {
+        $('[allow-view="1"][allow-view="2"]').remove();
+    }
+    else if (window.userInfo.role === 2) {
+        $('[allow-view="1"]').remove(); 
+    }
+</script>
 
 </body>
 </html>

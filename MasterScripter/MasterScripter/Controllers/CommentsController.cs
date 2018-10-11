@@ -66,7 +66,9 @@ namespace MasterScripter.Controllers
         {
             if (ModelState.IsValid)
             {
-                comment.UserId = 2;
+                var user = db.Users.FirstOrDefault(u => u.Email.Equals(User.Identity.Name));
+
+                comment.UserId = user.Id;
                 comment.CreationDate = DateTime.Now;
                 db.Comments.Add(comment);
                 db.SaveChanges();

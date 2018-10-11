@@ -54,5 +54,10 @@ namespace MasterScripter.Controllers
 
             return PartialView(analyticsViewModel);
         }
+
+        public ActionResult GetLogger()
+        {
+            return PartialView("Logger");
+        }
     }
 }

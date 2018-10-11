@@ -20,13 +20,14 @@
 </div>
 
 <script type="text/javascript">
+    // combine URL with API_KEY and paramters
     var url = 'https://newsapi.org/v2/top-headlines?' +
         'country=us&' +
         'category=technology&' +
         'apiKey=bfc10777d8424d098c4f04f1a6abf89e';
 
-    $.get(url).success(data => {
-        data.articles.forEach(article => {
+    $.get(url).success(data => { // get all news from BBC
+        data.articles.forEach(article => { // for each result, create card with title button and image
             var card = '<div class="container container-fluid">' +
                 '<div class="card">' +
                 (article.urlToImage !== null ? ('<img class="card-img-top" src="' + article.urlToImage + '" alt="' + article.title + '">') : "") +
@@ -41,8 +42,7 @@
                 '</div>' +
                 '</div>';
 
-            $('#cards').append(card);
-
+            $('#cards').append(card); // apend the element
         });
 
         $(function () {
