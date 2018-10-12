@@ -101,17 +101,17 @@ namespace MasterScripter.BL.Utils
             LogMessages.Add(new LogMessage("Starting new task " + execution.Id + ". tasks left: " + ExecutionsQueue.Count));
             LogMessages.Add(new LogMessage("Current running tasks  " + CurrentRunningTasks + "/" + MAX_PARALLEL_TASKS));
 
-            //db.Entry(execution).State = EntityState.Modified;
-            //db.SaveChanges();
+            db.Entry(execution).State = EntityState.Modified;
+            db.SaveChanges();
 
-            execution.Status = Status.Succeeded;
+            execution.Status = Status.Running;
 
             foreach (ExecutionsScripts executionsScripts in execution.ExecutionsScriptses)
             {
                 executionsScripts.Status = Status.Running;
                 executionsScripts.SrartTime = DateTime.Now;
-                //db.Entry(executionsScripts).State = EntityState.Modified;
-                //db.SaveChanges();
+                db.Entry(executionsScripts).State = EntityState.Modified;
+               db.SaveChanges();
 
                 try
                 {
@@ -119,28 +119,26 @@ namespace MasterScripter.BL.Utils
 
                     ExecuteSingleTask(executionsScripts);
                     executionsScripts.Status = Status.Succeeded;
-                    
-
                 }
                 catch (Exception e)
                 {
                     executionsScripts.Status = Status.Failed;
                     execution.Status = Status.Failed;
                     LogMessages.Add(new LogMessage("Error with run sub task of task  " + execution.Id, MessageType.Error));
-
                 }
                 finally
                 {
+                    execution.Status = execution.Status== Status.Failed? Status.Failed : Status.Succeeded;
                     executionsScripts.EndTime = DateTime.Now;
-                    //db.Entry(executionsScripts).State = EntityState.Modified;
-                    //db.SaveChanges();
+                    db.Entry(executionsScripts).State = EntityState.Modified;
+                    db.SaveChanges();
                     LogMessages.Add(new LogMessage("Finished run sub task of task  " + execution.Id + " Total time:" + (executionsScripts.EndTime - executionsScripts.SrartTime).Value.Seconds + " Seconds", MessageType.Success));
                 }
             }
 
             execution.EndTime = DateTime.Now;
-            //db.Entry(execution).State = EntityState.Modified;
-            //db.SaveChanges();
+            db.Entry(execution).State = EntityState.Modified;
+            db.SaveChanges();
             LogMessages.Add(new LogMessage("Finished working on task " + execution.Id + " Total time:" + (execution.EndTime - execution.SrartTime).Value.Minutes + " Minutes", MessageType.Success));
 
             CurrentRunningTasks--;
@@ -157,20 +155,14 @@ namespace MasterScripter.BL.Utils
 
         public void AddTask(Execution execution)
         {
-            execution.Id = ExecutionsQueue.Count + 1;
-            execution.ExecutionsScriptses = new List<ExecutionsScripts>()
-            {
-                new ExecutionsScripts(),
-                new ExecutionsScripts(),
-                new ExecutionsScripts(),
-                new ExecutionsScripts()
-            };
             if (execution.ScheduleTime == null)
                 ExecutionsQueue.Enqueue(execution);
             else
                 ScheduledExecution.Add(execution);
 
-            LogMessages.Add(new LogMessage("Added " + (execution.ScheduleTime == null ? "" : "Scheduled ") + " task  " + execution.Id + " with " + execution.ExecutionsScriptses.Count + " sub tasks"));
+            LogMessages.Add(new LogMessage("Added " + (execution.ScheduleTime == null ? "" : "Scheduled ") + " task  " +
+                                           execution.Id + " with " + execution.ExecutionsScriptses.Count +
+                                           " sub tasks"));
         }
 
         public void Stop()

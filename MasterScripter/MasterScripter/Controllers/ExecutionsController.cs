@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using MasterScripter.BL.Utils;
 using MasterScripter.DAL.Models;
 using MasterScripter.Models;
 //$('#sortable2 li').toArray().map(x=>  $(x).attr("sid") +"_"+ $(x).attr("sver")).join(",")
@@ -122,7 +123,9 @@ namespace MasterScripter.Controllers
             {
                 execution.CreationDate = DateTime.Now;
                 execution.Status = Status.Waiting;
-                execution.UserId = db.Users.First().Id;
+                var user = db.Users.FirstOrDefault(u => u.Email.Equals(User.Identity.Name));
+
+                execution.UserId = user.Id;
                
                 if (!String.IsNullOrEmpty(Request.Form.Get("ScheduleTime"))){
                     execution.ScheduleTime = DateTime.ParseExact(Request.Form.Get("ScheduleTime"), "DD/MM/YYYY HH:mm", CultureInfo.InvariantCulture);
@@ -142,6 +145,7 @@ namespace MasterScripter.Controllers
                 }
                 db.Executions.Add(execution);
                 db.SaveChanges();
+                QueueManager.Instance.AddTask(execution);
                 return RedirectToAction("Index");
             }
 

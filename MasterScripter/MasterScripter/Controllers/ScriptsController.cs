@@ -74,7 +74,8 @@ namespace MasterScripter.Controllers
             script.Version = 1;
             script.CreationDate = DateTime.Now;
 
-
+            var user = db.Users.FirstOrDefault(u => u.Email.Equals(User.Identity.Name));
+            script.UserId = user.Id;
             if (ModelState.IsValid)
             {
                 db.Scripts.Add(script);
@@ -130,8 +131,12 @@ namespace MasterScripter.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = db.Users.FirstOrDefault(u => u.Email.Equals(User.Identity.Name));
+                script.UserId = user.Id;
+
                 script.CreationDate = DateTime.Now;
                 script.Version++;
+
                 db.Scripts.Add(script);
                 db.SaveChanges();
                 return RedirectToAction("IndexView");

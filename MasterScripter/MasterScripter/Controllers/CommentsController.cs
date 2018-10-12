@@ -19,12 +19,16 @@ namespace MasterScripter.Controllers
         public ActionResult Index()
         {
             var comments = db.Comments.Include(c => c.Execution).Include(c => c.User);
+
+            ViewBag.CurrentUser = db.Users.FirstOrDefault(u => u.Email.Equals(User.Identity.Name));
             return View(comments.ToList());
         }
 
         public ActionResult CommentsByExecution(int executionid)
         {
             var comments = db.Comments.Where(c=>c.ExecutionId==executionid).Include(c => c.Execution).Include(c => c.User);
+            ViewBag.CurrentUser = db.Users.FirstOrDefault(u => u.Email.Equals(User.Identity.Name));
+
             return PartialView("Index",comments.ToList());
         }
 
