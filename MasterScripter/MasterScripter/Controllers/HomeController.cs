@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MasterScripter.BL.Utils;
+using MasterScripter.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -6,11 +8,19 @@ using System.Web.Mvc;
 
 namespace MasterScripter.Controllers
 {
+    [Authorize]
+    [ConnectedUserFilterAttribute]
     public class HomeController : Controller
     {
         public ActionResult Index()
         {
-            return View();
+            MasterScripterContext db = new MasterScripterContext();
+            MasterScripter.DAL.Models.User user = db.Users.FirstOrDefault(u => u.Email.Equals(User.Identity.Name));
+            if (user != null)
+            {
+                return View();
+            }
+            return View("NotConnectedYet");
         }
 
         public ActionResult About()

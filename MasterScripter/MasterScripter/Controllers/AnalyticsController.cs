@@ -4,11 +4,14 @@ using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using MasterScripter.BL.Utils;
 using MasterScripter.DAL.Models;
 using MasterScripter.Models;
 
 namespace MasterScripter.Controllers
 {
+    [Authorize]
+    [ConnectedUserFilterAttribute]
     public class AnalyticsController : Controller
     {
         private MasterScripterContext db = new MasterScripterContext();

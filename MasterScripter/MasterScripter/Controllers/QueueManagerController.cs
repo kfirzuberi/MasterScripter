@@ -10,6 +10,9 @@ using Microsoft.Ajax.Utilities;
 
 namespace MasterScripter.Controllers
 {
+    [Authorize]
+    [ConnectedUserFilterAttribute]
+
     public class QueueManagerController : Controller
     {
         // GET: QueueManager

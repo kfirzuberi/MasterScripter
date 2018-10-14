@@ -7,10 +7,13 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using MasterScripter.Models;
+using MasterScripter.BL.Utils;
 
 namespace MasterScripter.Controllers
 {
     [Authorize]
+    [ConnectedUserFilterAttribute]
+
     public class ManageController : Controller
     {
         private ApplicationSignInManager _signInManager;

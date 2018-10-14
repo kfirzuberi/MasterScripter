@@ -27,17 +27,17 @@
         <div class="" style="position: relative;">
             <div class="" style="position: absolute; left: 280px; bottom: 0;">
                 <ul class="nav nav-tabs bg-primary">
-                    <li class="nav-item">
+                    <li class="nav-item" allow-view="0" >
                         <a class="nav-link active" href="@Url.Action("Index", "Home")">Home</a>
                     </li>
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown" allow-view="0">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Scripts</a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="@Url.Action("IndexView", "Scripts")">View</a>
                             <a class="dropdown-item" allow-view="2" href="@Url.Action("Create", "Scripts")">Add new</a>
                         </div>
                     </li>
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown" allow-view="0">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Executions</a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="@Url.Action("Index", "Executions")">View</a>
@@ -47,7 +47,7 @@
                         </div>
                     </li>
 
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown" allow-view="0">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Machines</a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="@Url.Action("Index", "Machines")">View</a>
@@ -55,13 +55,13 @@
                         </div>
                     </li>
                     
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown" allow-view="2">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Management</a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="@Url.Action("Index", "Companies")">Companies</a>
+                            <a class="dropdown-item" allow-view="2" href="@Url.Action("Index", "Companies")">Companies</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="@Url.Action("Index", "Users")">Users</a>
-                            <a class="dropdown-item" href="@Url.Action("GetUnconnectedUsers", "Users")">Unconnecte Users</a>
+                            <a class="dropdown-item" allow-view="2" href="@Url.Action("Index", "Users")">Users</a>
+                            <a class="dropdown-item" allow-view="1" href="@Url.Action("GetUnconnectedUsers", "Users")">Unconnecte Users</a>
                             
                             <div class="dropdown-divider"></div>
                             <a id="startQueue" class="dropdown-item" href="#">Start Queue</a>
@@ -69,9 +69,7 @@
                             <a id="addToTheQueue" class="dropdown-item" href="#">Add new to the Queue</a>
                         </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" href="#">Disabled</a>
-                    </li>
+
                     @Html.Partial("_LoginPartial")
                 </ul>
             </div>
@@ -146,12 +144,19 @@
     sessionStorage.setItem("userInfoRole", window.userInfo.role);
     sessionStorage.setItem("userInfoEmail", window.userInfo.email);
 
-    if (window.userInfo.role === 3) {
-        $('[allow-view="1"][allow-view="2"]').remove();
+    //window is global fo all pages
+    window.clearViews= function clearViews() {
+        if (window.userInfo.role === 3) {
+            $('[allow-view="1"],[allow-view="2"]').remove();
+        }
+        else if (window.userInfo.role === 2) {
+            $('[allow-view="1"]').remove();
+        }
+        else if (window.userInfo.role === "") {
+            $('[allow-view="0"],[allow-view="1"],[allow-view="2"]').remove();
+        }
     }
-    else if (window.userInfo.role === 2) {
-        $('[allow-view="1"]').remove(); 
-    }
+    window.clearViews();
 </script>
 
 </body>

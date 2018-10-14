@@ -6,13 +6,16 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using MasterScripter.BL.Utils;
 using MasterScripter.DAL.Models;
 using MasterScripter.Models;
 using Microsoft.AspNet.Identity;
 
 namespace MasterScripter.Controllers
 {
-   // [Authorize]
+    [Authorize]
+    [ConnectedUserFilterAttribute]
+
     public class MachinesController : Controller
     {
         private MasterScripterContext db = new MasterScripterContext();

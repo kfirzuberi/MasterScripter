@@ -47,7 +47,7 @@
             <i style="margin-left: unset;" class="material-icons">attach_money</i>
         </li>
     </ul>
-    <div class="card-body" style="position: relative">
+    <div class="card-body" allow-view="2" style="position: relative">
         <a href="@Url.Action("Edit", "Scripts", new { id=Model.Id, version=Model.Version})" class="btn btn-primary bmd-btn-fab bootom-right-fab" 
            style="position: absolute"  data-toggle="tooltip" data-placement="top" title="Edit Script">
             <i class="material-icons">edit</i>
@@ -61,7 +61,7 @@
 </div>
 <script type="text/javascript">
 
-    
+    window.clearViews();
     var editor=ace.edit(document.getElementById("aceContent"), {
         mode: "ace/mode/javascript",
         selectionStyle: "text"

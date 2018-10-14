@@ -15,6 +15,9 @@ using MasterScripter.Models;
 
 namespace MasterScripter.Controllers
 {
+    [Authorize]
+    [ConnectedUserFilterAttribute]
+
     public class ExecutionsController : Controller
     {
         private MasterScripterContext db = new MasterScripterContext();

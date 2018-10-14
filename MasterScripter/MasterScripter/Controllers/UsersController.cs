@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using MasterScripter.BL.Utils;
 using MasterScripter.DAL.Models;
 using MasterScripter.Models;
 using Microsoft.AspNet.Identity;
@@ -13,6 +14,9 @@ using Microsoft.AspNet.Identity.Owin;
 
 namespace MasterScripter.Controllers
 {
+    [Authorize]
+    [ConnectedUserFilterAttribute]
+
     public class UsersController : Controller
     {
         private MasterScripterContext db = new MasterScripterContext();

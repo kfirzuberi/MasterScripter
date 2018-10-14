@@ -198,6 +198,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="BL\Utils\Actions.cs" />
+    <Compile Include="BL\Utils\ConnectedUserFilterAttribute.cs" />
     <Compile Include="BL\Utils\PermissionManager.cs" />
     <Compile Include="BL\Utils\QueueManager.cs" />
     <Compile Include="Controllers\AccountController.cs" />
