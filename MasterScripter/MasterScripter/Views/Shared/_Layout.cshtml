@@ -8,14 +8,15 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    
-    
-@Scripts.Render("~/bundles/popper")
-@Scripts.Render("~/bundles/jquery")
-@Scripts.Render("~/bundles/bootstrap")
-    <script type="text/javascript" src="@Url.Content("~/Scripts/moment.js")"></script>
 
-@RenderSection("scripts", required: false)
+
+    @Scripts.Render("~/bundles/popper")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script type="text/javascript" src="@Url.Content("~/Scripts/moment.js")"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ace.js"></script>
+
+    @RenderSection("scripts", required: false)
 
 </head>
 <body>
