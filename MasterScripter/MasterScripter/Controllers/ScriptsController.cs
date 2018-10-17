@@ -80,15 +80,19 @@ namespace MasterScripter.Controllers
 
             var user = db.Users.FirstOrDefault(u => u.Email.Equals(User.Identity.Name));
             script.UserId = user.Id;
+            ModelState["UserId"].Errors.Clear();
+            ModelState.SetModelValue("UserId", new ValueProviderResult(user.Id,"",System.Globalization.CultureInfo.InvariantCulture));
             if (ModelState.IsValid)
             {
                 db.Scripts.Add(script);
                 db.SaveChanges();
+                new TwitterAPI().Tweet(string.Format("The script {0} - {1} created. Cost: {2}$", script.Name, script.Description, script.Cost));
                 return RedirectToAction("IndexView");
             }
 
             ViewBag.FileTypeId = new SelectList(db.FileTypes, "Id", "Language", script.FileTypeId);
             ViewBag.UserId = new SelectList(db.Users, "Id", "FullName", script.UserId);
+
             return View(script);
         }
 
