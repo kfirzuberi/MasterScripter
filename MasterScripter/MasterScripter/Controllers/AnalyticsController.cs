@@ -19,28 +19,39 @@ namespace MasterScripter.Controllers
         // GET: Analytics
         public ActionResult Index()
         {
-            Dictionary<Status, int> totalStatuses = db.Executions.ToList().GroupBy(execution => execution.Status)
+            var user = db.Users.FirstOrDefault(u => u.Email.Equals(User.Identity.Name));
+
+            List<Execution> executions = db.Executions.ToList();
+            List<Machine> machines = db.Machines.ToList();
+
+            if (user.Role != Role.Admin && user.Role != Role.Manager)
+            {
+                executions = executions.Where(e => e.Machine.CompanyCode == user.CompanyCode).ToList();
+                machines = machines.Where(m=>m.CompanyCode == user.CompanyCode).ToList();
+            }
+
+            Dictionary<Status, int> totalStatuses = executions.GroupBy(execution => execution.Status)
                 .ToList().ToDictionary(input => input.Key, grouping => grouping.Count());
 
-            Dictionary<Reason, int> totalReasons = db.Executions.ToList().GroupBy(execution => execution.Reason)
+            Dictionary<Reason, int> totalReasons = executions.GroupBy(execution => execution.Reason)
                 .ToList().ToDictionary(input => input.Key, grouping => grouping.Count());
 
-            Dictionary<Country, int> totalCountries = db.Machines.ToList().GroupBy(execution => execution.Country)
+            Dictionary<Country, int> totalCountries = machines.GroupBy(execution => execution.Country)
                 .ToList().ToDictionary(input => input.Key, grouping => grouping.Count());
 
-            Dictionary<Machine, int> totalMachine = db.Executions.ToList().GroupBy(execution => execution.Machine)
+            Dictionary<Machine, int> totalMachine = executions.GroupBy(execution => execution.Machine)
                 .ToList().ToDictionary(input => input.Key, grouping => grouping.Count());
 
 
-            var myData = from log in db.Executions
-                group log by EntityFunctions.TruncateTime(log.CreationDate) into g
+            var myData = from log in executions
+                         group log by log.CreationDate.Value.Date into g
                 orderby g.Key
                 select new { CreateTime = g.Key, Count = g.Count() };
 
 
-            Tuple<int, int, int> states = new Tuple<int, int, int>(db.Machines.Count(),
-                db.Machines.Count(m => !m.IsDeleted),
-                db.Machines.Count(m => m.IsDeleted));
+            Tuple<int, int, int> states = new Tuple<int, int, int>(machines.Count(),
+                machines.Count(m => !m.IsDeleted),
+                machines.Count(m => m.IsDeleted));
           
 
             Dictionary<DateTime, int> totalExecutionsPerDay = myData.ToList().Where(i=>i.CreateTime!=null).ToDictionary(i=>(DateTime)i.CreateTime, i=>i.Count);

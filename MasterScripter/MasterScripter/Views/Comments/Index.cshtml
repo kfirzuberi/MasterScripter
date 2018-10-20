@@ -22,7 +22,6 @@
                 <div class="msg_history">
                     @foreach (var item in Model)
                     {
-
                         if (item.UserId != ViewBag.CurrentUser.Id)
                         {
                             <div class="incoming_msg">
@@ -43,8 +42,13 @@
                         {
                             <div class="outgoing_msg">
                                 <div class="sent_msg">
-                                    <p>@item.Content</p>
-                                    <span class="time_date" data-date="@item.CreationDate"  data-toggle="tooltip" data-placement="left" title="@(item.CreationDate)"> 11:01 AM    |    June 9</span> </div>
+                                    <p> 
+                                        <button type="button" msg-id="@item.Id" class="btn bmd-btn-icon bmd-btn-icon-sm">
+                                            <i class="material-icons md-14" style="line-height: normal;">close</i>
+                                        </button>
+                                     @item.Content</p>
+                                    <span class="time_date" data-date="@item.CreationDate" data-toggle="tooltip" data-placement="left" title="@(item.CreationDate)"> 11:01 AM | June 9</span>
+                                </div>
                             </div>
                         }
                     }
@@ -55,6 +59,16 @@
 </div>
 
 <script type="text/javascript">
+
+    $('.sent_msg p button').click(function (parameters) {
+        var parent = $(this).parents('.outgoing_msg');
+        var url = '@Url.Action("DeleteComment", "Comments")/' + $(this).attr('msg-id');
+
+        $.post(url, { id: $(this).attr('msg-id') }).success(function (parameters) {
+            parent.remove();
+        });
+    });
+
     $(function () {
         $('[data-date]').each(function () {
             var val = $(this).attr('data-date');

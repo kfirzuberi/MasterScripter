@@ -25,7 +25,15 @@ namespace MasterScripter.Controllers
         // GET: Executions
         public ActionResult Index()
         {
+            var user = db.Users.FirstOrDefault(u => u.Email.Equals(User.Identity.Name));
+
             var executions = db.Executions.Include(e => e.Machine).Include(e => e.Reason).Include(e => e.User);
+
+            if (user.Role != Role.Admin && user.Role != Role.Manager)
+            {
+                executions = executions.Where(e => e.Machine.CompanyCode == user.CompanyCode);
+            }
+
             return View(executions.ToList());
         }
 
@@ -47,8 +55,15 @@ namespace MasterScripter.Controllers
         // GET: Executions/Create
         public ActionResult Create()
         {
-            
-        
+            var user = db.Users.FirstOrDefault(u => u.Email.Equals(User.Identity.Name));
+
+            var machines = db.Machines.Include(m => m.Company).Include(m => m.Country);
+
+            if (user.Role != Role.Admin && user.Role != Role.Manager)
+            {
+                machines = machines.Where(m => m.CompanyCode == user.CompanyCode);
+            }
+
             var grouppedScripts = db.Scripts.Include(s => s.FileType).Include(s => s.User)
                   .OrderBy(script => script.Version)
                   .GroupBy(script => script.Id).ToList();
@@ -57,7 +72,7 @@ namespace MasterScripter.Controllers
             ViewBag.Scripts = scripts.ToList();
             
 
-            ViewBag.Machines =  db.Machines;
+            ViewBag.Machines =  machines;
             ViewBag.ReasonId = new SelectList(db.Reasons, "Id", "ReasonName");
             ViewBag.UserId = new SelectList(db.Users, "Id", "FullName");
             return View();

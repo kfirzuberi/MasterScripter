@@ -22,7 +22,10 @@
 <body>
 <nav style="position: fixed; width: 100%; z-index: 999999999;">
     <div class="container-fluid bg-primary">
-        <img src="~/images/logo-1.png" class="img-fluid" alt="Responsive image" style="margin: 0.5rem 0 1rem 0; width: 13rem;">
+        <a href="@Url.Action("Index", "Home")">
+            <img src="~/images/logo-1.png" class="img-fluid" alt="Responsive image" style="margin: 0.5rem 0 1rem 0; width: 13rem;">
+
+        </a>
 
         <div class="" style="position: relative;">
             <div class="" style="position: absolute; left: 280px; bottom: 0;">
@@ -42,8 +45,6 @@
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="@Url.Action("Index", "Executions")">View</a>
                             <a class="dropdown-item" href="@Url.Action("Create", "Executions")">Add new</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Separated link</a>
                         </div>
                     </li>
 
@@ -66,7 +67,6 @@
                             <div class="dropdown-divider"></div>
                             <a id="startQueue" class="dropdown-item" href="#">Start Queue</a>
                             <a id="stopQueue" class="dropdown-item" href="#">Stop Queue</a>
-                            <a id="addToTheQueue" class="dropdown-item" href="#">Add new to the Queue</a>
                         </div>
                     </li>
 
@@ -83,35 +83,27 @@
     @RenderBody()
     
     <script type="text/javascript">
-        $(function () {
+        $(function() {
             $('[data-toggle="tooltip"]').tooltip();
         });
 
         $('#startQueue').click(function(parameters) {
-
             $.get('@Url.Action("StartQueue", "QueueManager")').success(function (parameters) {
-               
                 $("#startQueue").prop("disabled", true);
             });
         });
 
         $('#stopQueue').click(function (parameters) {
             $.get('@Url.Action("StopQueue", "QueueManager")').success(function (parameters) {
-                
                 $("#stopQueue").prop("disabled", true);
             });
         });
 
-        $('#addToTheQueue').click(function (parameters) {
-            $.get('@Url.Action("AddToTheQueue", "QueueManager")').success(function (parameters) {
-            
-            });
-        });
     </script>
     <hr/>
     <footer>
       
-        <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        <p>&copy; @DateTime.Now.Year - Dor Kfir Riman - Master Scripter Application</p>
     </footer>
 </div>
     

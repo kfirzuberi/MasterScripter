@@ -31,20 +31,6 @@ namespace MasterScripter.Controllers
             return View(scripts.ToList());
         }
 
-        private bool CheckPriceRange(Script script, int priceRange)
-        {
-            switch (priceRange)
-            {
-                case 1:
-                    return script.Cost < 100;
-                case 2:
-                    return script.Cost >= 100 && script.Cost <= 500;
-                case 3:
-                    return script.Cost > 500;
-                default: return true;
-            }
-        }
-
         public ActionResult GetScriptList(string name, string desc, int priceRange)
         {
             var grouppedScripts = db.Scripts.Include(s => s.FileType).Include(s => s.User)

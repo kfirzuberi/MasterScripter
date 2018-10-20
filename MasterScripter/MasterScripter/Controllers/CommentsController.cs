@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security.AntiXss;
 using MasterScripter.BL.Utils;
 using MasterScripter.DAL.Models;
 using MasterScripter.Models;
@@ -133,6 +134,16 @@ namespace MasterScripter.Controllers
                 return HttpNotFound();
             }
             return View(comment);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteComment(int id)
+        {
+            Comment comment = db.Comments.Find(id);
+            db.Comments.Remove(comment);
+            db.SaveChanges();
+
+            return Json("ok");
         }
 
         // POST: Comments/Delete/5

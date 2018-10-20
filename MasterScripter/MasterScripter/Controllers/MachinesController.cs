@@ -23,8 +23,15 @@ namespace MasterScripter.Controllers
         // GET: Machines
         public ActionResult Index()
         {
+            var user = db.Users.FirstOrDefault(u => u.Email.Equals(User.Identity.Name));
+
             var machines = db.Machines.Include(m => m.Company).Include(m => m.Country);
-         var name =   User.Identity.GetUserName();
+
+            if (user.Role != Role.Admin && user.Role != Role.Manager)
+            {
+                machines = machines.Where(m => m.CompanyCode == user.CompanyCode);
+            }
+
             return View(machines.ToList());
         }
 
