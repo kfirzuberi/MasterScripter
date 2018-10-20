@@ -31,6 +31,40 @@ namespace MasterScripter.Controllers
             return View(scripts.ToList());
         }
 
+        private bool CheckPriceRange(Script script, int priceRange)
+        {
+            switch (priceRange)
+            {
+                case 1:
+                    return script.Cost < 100;
+                case 2:
+                    return script.Cost >= 100 && script.Cost <= 500;
+                case 3:
+                    return script.Cost > 500;
+                default: return true;
+            }
+        }
+
+        public ActionResult GetScriptList(string name, string desc, int priceRange)
+        {
+            var grouppedScripts = db.Scripts.Include(s => s.FileType).Include(s => s.User)
+                .Where(script => (script.Name.ToLower().Contains(name.ToLower()) || string.IsNullOrEmpty(name)) &&
+                                 (script.Description.ToLower().Contains(desc.ToLower()) ||
+                                  string.IsNullOrEmpty(desc)) &&
+                                 (priceRange == 1
+                                     ? script.Cost < 100
+                                     : (
+                                         priceRange == 2
+                                             ? (script.Cost >= 100 && script.Cost <= 500)
+                                             : (priceRange == 3 ? script.Cost > 500 : true))))
+                .OrderBy(script => script.Version)
+                .GroupBy(script => script.Id).ToList();
+
+            var scripts = grouppedScripts.Select(s => s.Last()).ToList();
+
+            return PartialView("ScriptList", scripts.ToList());
+        }
+
         public ActionResult IndexView()
         {
             var grouppedScripts = db.Scripts.Include(s => s.FileType).Include(s => s.User)

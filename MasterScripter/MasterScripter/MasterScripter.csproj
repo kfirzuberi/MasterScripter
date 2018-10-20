@@ -362,6 +362,7 @@
     <Content Include="Views\Shared\NotConnectedYet.cshtml" />
     <Content Include="Views\QueueManager\Index.cshtml" />
     <Content Include="Views\Analytics\Logger.cshtml" />
+    <Content Include="Views\Scripts\ScriptList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

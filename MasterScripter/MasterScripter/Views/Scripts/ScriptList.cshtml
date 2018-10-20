@@ -1,0 +1,30 @@
+﻿@model IEnumerable<MasterScripter.DAL.Models.Script>
+
+<div class="container-fluid">
+    <ul id="scriptlist" class="list-group">
+        @foreach (var item in Model)
+        {
+            <li sid="@item.Id" sver="@item.Version" class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
+
+                <span class="name">
+                    @Html.DisplayFor(modelItem => item.Name)
+                </span>
+                @Html.HiddenFor(modelItem => item.Description)
+                <span class="badge badge-primary badge-pill">
+                    @Html.DisplayFor(modelItem => item.Version)
+                </span>
+
+            </li>
+        }
+    </ul>
+</div>
+
+<script type="text/javascript">
+    $('#scriptlist .list-group-item').click(function (event) {
+        $('#scriptlist .list-group-item').removeClass('active');
+        $(this).addClass('active');
+        $('#scriptDetail').load('@Url.Action("GetScriptDetail", "Scripts")', { id: $(this).attr("sid"), version: $(this).attr("sver") });
+    });
+
+    $('#scriptlist .list-group-item').first().click();
+</script>
