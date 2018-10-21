@@ -46,23 +46,26 @@
 }
 
 <div class="container-fluid">
-    <div class="row" style="margin-bottom: 0.5rem;">
-        @foreach (var s in Enum.GetValues(typeof(Status)).Cast<Status>())
-        {
-            <div class="col-md-3">
-                <div class="card text-center">
-                    <div class="card-body text-dark">
-                        <h6 class="">@s Executions</h6>
-                        <i class="material-icons md-48 @GetCssClass(s, "text-")">@GetIconText(s)</i>
-                        <p class="card-text">
-                            <h3>@(Model.TotalStatuses.ContainsKey(s) ? Model.TotalStatuses[s]: 0)</h3>
-                        </p>
+    <div class="row" style="margin-bottom: 0.5rem;" id="analytics-view-numbers">
+        <div class="container-fluid card-columns" style="column-count: 2">
+            @foreach (var s in Enum.GetValues(typeof(Status)).Cast<Status>())
+            {
+                <div class="col">
+                    <div class="card text-center">
+                        <div class="card-body text-dark">
+                            <h6 class="">@s Executions</h6>
+                            <i class="material-icons md-48 @GetCssClass(s, "text-")">@GetIconText(s)</i>
+                            <p class="card-text">
+                                <h3>@(Model.TotalStatuses.ContainsKey(s) ? Model.TotalStatuses[s] : 0)</h3>
+                            </p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            
-        }
-        
+
+            } 
+        </div>
+    
+
     </div>
     
     <div class="row" style="margin-bottom: 0.5rem;">

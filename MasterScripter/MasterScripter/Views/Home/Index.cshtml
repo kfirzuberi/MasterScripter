@@ -12,20 +12,36 @@
 </div>
 
 <div class="container-fluid" allow-view="0">
-    <div class="card" style="margin-bottom: 5px;">
-        <div class="card-body">
-            <a class="twitter-timeline" data-width="350" data-height="600" href="https://twitter.com/dorkfirroman?ref_src=twsrc%5Etfw">Tweets by dorkfirroman</a>
-            <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    <div class="row">
+        <div class="col-4">
+            <div class="card" style="margin-bottom: 5px;">
+                <div class="card-body">
+                    <a class="twitter-timeline" data-width="350" data-height="600" href="https://twitter.com/dorkfirroman?ref_src=twsrc%5Etfw">Tweets by dorkfirroman</a>
+                    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                </div>
+            </div>
+        </div>
+        <div class="col-8" id="analytics-view-numbers-place-holder">
+         
         </div>
     </div>
-    </div>
+  
+</div>
     <div id="analytics-view" allow-view="0"></div>
 
     <script type="text/javascript">
 
     $('#analytics-view').load('@Url.Action("Index","Analytics")');
 
-    $('#loggerPlaceHolder').load('@Url.Action("GetLogger","Analytics")');
+    $('#loggerPlaceHolder').load('@Url.Action("GetLogger","Analytics")',
+        function (parameters) {
+            setTimeout(function(parameters) {
+                    var elem = $('#analytics-view-numbers').detach();
+                    $('#analytics-view-numbers-place-holder').append(elem);
+                },
+                1000);
+       
+        });
     </script>
 
 
