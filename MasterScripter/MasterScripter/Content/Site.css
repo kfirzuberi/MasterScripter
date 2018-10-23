@@ -700,3 +700,16 @@ textarea {
     background-repeat: no-repeat;
     background-position: center center;
 }
+
+
+.nav-tabs li.nav-item a.nav-link{
+    font-size: 0.85rem;
+    -webkit-transition: font-size .5s ease;
+    -moz-transition: font-size .5s ease;
+    -o-transition: font-size .5s ease;
+    transition: font-size .5s ease;
+}
+
+.nav-tabs li.nav-item a.nav-link:hover {
+    font-size: 0.9rem;
+}

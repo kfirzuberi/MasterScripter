@@ -69,6 +69,24 @@ namespace MasterScripter.Controllers
             return PartialView(analyticsViewModel);
         }
 
+        public ActionResult GetKmeansData()
+        {
+            List<Tuple<int, int[]>> ff = new List<Tuple<int, int[]>>();
+
+            int sctiptCount = db.Scripts.Max(s => s.Id) + 1;
+
+            var features = db.Executions.ToList().ConvertAll<Tuple<int, int[]>>(input =>
+            {
+                var arr = new int[sctiptCount];
+                for (int i = 0; i < arr.Length; i++)
+                    arr[i] = input.ExecutionsScriptses.Any(s => s.ScriptId == i) ? 1 : 0;
+
+                return new Tuple<int, int[]>(input.Id, arr);
+            }).ToList();
+
+            return Json(new {data = features }, JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult GetLogger()
         {
             return PartialView("Logger");

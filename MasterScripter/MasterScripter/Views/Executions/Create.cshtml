@@ -6,6 +6,7 @@
 <script type="text/javascript" src="~/Scripts/Schedule.js"></script>
 
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="~/Scripts/kmeans.js"></script>
 
 <h2>Create</h2>
 <div class="row">
@@ -123,12 +124,77 @@
             connectWith: ".connectedSortable",
             update: function (event, ui) {
                 $("#ScriptsList").val($('#sortable2 li').toArray().map(x => $(x).attr("sid") + "_" + $(x).attr("sver")).join(","));
-                $('#scriptsCount').text('Total Scripts: ' + $('#sortable2 li').length)
-            },
+                $('#scriptsCount').text('Total Scripts: ' + $('#sortable2 li').length);
+     
+
+                if (isKmenasData === false) {
+                    getKmenasData();
+                }
+            
+            }
            
             
         }).disableSelection();
     });
+
+    var isKmenasData = false;
+
+    function getKmenasData() {
+        isKmenasData = true;
+        $('#sortable1 li .card-body').removeClass('bg-info');
+        $('#sortable2 li .card-body').removeClass('bg-info');
+
+
+        $.get('@Url.Action("GetKmeansData","Analytics")').success(function (parameters) {
+
+            var km = new kMeans({K: 4 });
+
+            var data = parameters.data.map(x => x.Item2);
+
+            var fakeExe = Array.apply(null, Array(data[0].length)).map(Number.prototype.valueOf, 0);
+            $('#sortable2 li').toArray().map(x => parseInt($(x).attr("sid"))).forEach(x => fakeExe[x] = 1);
+
+            data.push(fakeExe);
+
+            km.cluster(data);
+
+            while (km.step()) {
+                km.findClosestCentroids();
+                km.moveCentroids();
+
+                console.log(km.centroids);
+
+                if (km.hasConverged()) break;
+            }
+
+            console.log('Finished in:', km.currentIteration, ' iterations');
+            console.log(km.centroids, km.clusters);
+
+            var matchedCluster = km.clusters.filter(x => x.indexOf(data.length - 1) > -1);
+
+            var scriptCounter = Array.apply(null, Array(data[0].length)).map(Number.prototype.valueOf, 0);
+
+            matchedCluster[0].forEach(x => {
+                if (parameters.data[x]) {
+                    parameters.data[x].Item2.forEach((temp, i) => {
+                        scriptCounter[i] += temp;
+                    });
+                }
+            });
+
+            var tempArray = scriptCounter;
+            tempArray = tempArray.filter((x, i) => fakeExe[i] === 0);
+            tempArray.sort((a, b) => b-a);
+
+            var suggestedScriptId = scriptCounter.indexOf(tempArray[0]);
+
+            $('#sortable1 li[sid='+suggestedScriptId+'] .card-body').addClass('bg-info');
+            $("#sortable1").scrollTo(".bg-info", 1000);
+            isKmenasData = false;
+        });
+
+
+    }
 
     $('#ScheduleTime').bootstrapMaterialDatePicker({ format: 'DD/MM/YYYY HH:mm',minDate: new Date() });
 </script>
