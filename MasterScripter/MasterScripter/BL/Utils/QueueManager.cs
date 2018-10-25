@@ -14,6 +14,8 @@ namespace MasterScripter.BL.Utils
     public sealed class QueueManager
     {
         private static readonly QueueManager instance = new QueueManager();
+        private static readonly Object obj = new Object();
+
         private Queue<Execution> ExecutionsQueue { get; set; }
         private List<Execution> ScheduledExecution { get; set; }
         private MasterScripterContext db = new MasterScripterContext();
@@ -92,6 +94,16 @@ namespace MasterScripter.BL.Utils
             }
         }
 
+        private void UpdateDBChangesLock(Object entity)
+        {
+            lock (obj)
+            {
+                db.Entry(entity).State = System.Data.Entity.EntityState.Modified;
+
+                db.SaveChanges();
+            }
+
+        }
 
         private void ExecuteTask(Execution execution)
         {
@@ -101,8 +113,7 @@ namespace MasterScripter.BL.Utils
             LogMessages.Add(new LogMessage("Starting new task " + execution.Id + ". tasks left: " + ExecutionsQueue.Count));
             LogMessages.Add(new LogMessage("Current running tasks  " + CurrentRunningTasks + "/" + MAX_PARALLEL_TASKS));
 
-     //       db.Entry(execution).State = EntityState.Modified;
-            db.SaveChanges();
+            UpdateDBChangesLock(execution);
 
             execution.Status = Status.Running;
 
@@ -110,8 +121,8 @@ namespace MasterScripter.BL.Utils
             {
                 executionsScripts.Status = Status.Running;
                 executionsScripts.SrartTime = DateTime.Now;
-               // db.Entry(executionsScripts).State = EntityState.Modified;
-               db.SaveChanges();
+
+                UpdateDBChangesLock(executionsScripts);
 
                 try
                 {
@@ -130,15 +141,13 @@ namespace MasterScripter.BL.Utils
                 {
                     execution.Status = execution.Status== Status.Failed? Status.Failed : Status.Succeeded;
                     executionsScripts.EndTime = DateTime.Now;
-                 //   db.Entry(executionsScripts).State = EntityState.Modified;
-                    db.SaveChanges();
+                    UpdateDBChangesLock(executionsScripts);
                     LogMessages.Add(new LogMessage("Finished run sub task of task  " + execution.Id + " Total time:" + (executionsScripts.EndTime - executionsScripts.SrartTime).Value.Seconds + " Seconds", MessageType.Success));
                 }
             }
 
             execution.EndTime = DateTime.Now;
-            db.Entry(execution).State = EntityState.Modified;
-            db.SaveChanges();
+            UpdateDBChangesLock(execution);
             LogMessages.Add(new LogMessage("Finished working on task " + execution.Id + " Total time:" + (execution.EndTime - execution.SrartTime).Value.Minutes + " Minutes", MessageType.Success));
 
             CurrentRunningTasks--;

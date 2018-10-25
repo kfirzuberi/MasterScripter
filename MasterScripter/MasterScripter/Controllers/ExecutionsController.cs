@@ -99,6 +99,13 @@ namespace MasterScripter.Controllers
                 executions = db.Executions.Include(e => e.Machine).Include(e => e.Reason).Include(e => e.User).ToList();
             }
 
+            var user = db.Users.FirstOrDefault(u => u.Email.Equals(User.Identity.Name));
+
+            if (user.Role != Role.Admin && user.Role != Role.Manager)
+            {
+                executions = executions.Where(e => e.Machine.CompanyCode == user.CompanyCode).ToList();
+            }
+
             List<Status> statusesList = statuses.ToList().ConvertAll(status =>
             {
                 Status s;

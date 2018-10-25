@@ -56,8 +56,8 @@
                         }
                         else
                         {
-                            <a href="@Url.Action("Edit", "Users", new {id = item.Id})" class="card-link">Edit</a>
-                            <a href="@Url.Action("Details", "Users", new {id = item.Id})" class="card-link">Show related data</a>
+                            <a href="@Url.Action("Edit", "Users", new {id = item.Id})" class="card-link"  allow-view="1">Edit</a>
+                            <a href="@Url.Action("Details", "Users", new {id = item.Id})" class="card-link" allow-view="1">Show related data</a>
                         }
               
                     </div>
