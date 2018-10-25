@@ -76,7 +76,7 @@
         mode: "ace/mode/javascript",
         selectionStyle: "text"
     });
-    editor.setValue("@Model.Content");
+    editor.setValue(`@Model.Content`);
     $("#hyperForm form").submit(function (event) {
         $("#Content").val(editor.getValue());
     })

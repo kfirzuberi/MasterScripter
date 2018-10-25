@@ -60,13 +60,12 @@
     </div>
 </div>
 <script type="text/javascript">
-
     window.clearViews();
     var editor=ace.edit(document.getElementById("aceContent"), {
         mode: "ace/mode/javascript",
         selectionStyle: "text"
     });
-    editor.setValue("@Model.Content");
+    editor.setValue(`@Model.Content`);
     editor.setReadOnly(true);
 </script>
 <!--TODO ליצור פונקציה שמשנה את התיבה לפי שפה של הסקריפט-->

@@ -17,6 +17,11 @@
     <div class="card-columns" style="column-count: 4; column-gap: 0;" id="cards">
 
     </div>
+    
+    <section>
+        <canvas id="myCanvas" width="200" height="100" style="border:1px solid #000000;"></canvas>
+
+    </section>
 </div>
 
 <script type="text/javascript">
@@ -57,4 +62,11 @@
 
         $('#loadingNews').hide();
     });
+
+    var c = document.getElementById("myCanvas");
+    var ctx = c.getContext("2d");
+    ctx.moveTo(0, 0);
+    ctx.lineTo(200, 100);
+    ctx.stroke();
+
 </script>

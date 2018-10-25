@@ -136,12 +136,12 @@ namespace MasterScripter.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,CreationDate,Status,SrartTime,EndTime,ScheduleTime,UserId,ReasonId,MachineVLan,MachineIP")] Execution execution)
         {
+            var user = db.Users.FirstOrDefault(u => u.Email.Equals(User.Identity.Name));
 
             if (ModelState.IsValid)
             {
                 execution.CreationDate = DateTime.Now;
                 execution.Status = Status.Waiting;
-                var user = db.Users.FirstOrDefault(u => u.Email.Equals(User.Identity.Name));
 
                 execution.UserId = user.Id;
                
@@ -167,6 +167,22 @@ namespace MasterScripter.Controllers
                 return RedirectToAction("Index");
             }
 
+            var machines = db.Machines.Include(m => m.Company).Include(m => m.Country);
+
+            if (user.Role != Role.Admin && user.Role != Role.Manager)
+            {
+                machines = machines.Where(m => m.CompanyCode == user.CompanyCode);
+            }
+
+            var grouppedScripts = db.Scripts.Include(s => s.FileType).Include(s => s.User)
+                .OrderBy(script => script.Version)
+                .GroupBy(script => script.Id).ToList();
+
+            var scripts = grouppedScripts.Select(s => s.Last()).ToList();
+            ViewBag.Scripts = scripts.ToList();
+
+
+            ViewBag.Machines = machines;
             ViewBag.MachineIP = new SelectList(db.Machines, "IP", "IP", execution.MachineIP);
             ViewBag.ReasonId = new SelectList(db.Reasons, "Id", "ReasonName", execution.ReasonId);
             ViewBag.UserId = new SelectList(db.Users, "Id", "FullName", execution.UserId);

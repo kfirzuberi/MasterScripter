@@ -708,6 +708,7 @@ textarea {
     -moz-transition: font-size .5s ease;
     -o-transition: font-size .5s ease;
     transition: font-size .5s ease;
+    text-shadow: 2px 2px #00000085;
 }
 
 .nav-tabs li.nav-item a.nav-link:hover {

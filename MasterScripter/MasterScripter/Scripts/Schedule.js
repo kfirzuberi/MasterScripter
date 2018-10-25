@@ -173,7 +173,7 @@
                     '<div class="dtp-close"><a href="javascript:void(0);"><i class="material-icons">clear</i></a></div>' +
                     '</header>' +
                     '<div class="dtp-date hidden">' +
-                    '<div>' +
+                    '<div style="  margin-top: 45px;">' +
                     '<div class="left center p10">' +
                     '<a href="javascript:void(0);" class="dtp-select-month-before"><i class="material-icons">chevron_left</i></a>' +
                     '</div>' +
